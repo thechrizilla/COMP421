@@ -1,15 +1,14 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.JButton;
+import javax.swing.border.EmptyBorder;
 
-public class create_grocery extends JFrame {
+public class CreateGrocery extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -22,13 +21,10 @@ public class create_grocery extends JFrame {
 	private JTextField textField_7;
 	private JTextField textField_8;
 
-
-
-
 	/**
 	 * Create the frame.
 	 */
-	public create_grocery() {
+	public CreateGrocery() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();

@@ -4,10 +4,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTable;
-import javax.swing.JButton;
 
-public class create_grocery_confirm extends JFrame {
+public class OrderNewIngredient extends JFrame {
 
 	private JPanel contentPane;
 
@@ -18,7 +16,7 @@ public class create_grocery_confirm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					create_grocery_confirm frame = new create_grocery_confirm();
+					OrderNewIngredient frame = new OrderNewIngredient();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -30,16 +28,13 @@ public class create_grocery_confirm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public create_grocery_confirm() {
+	public OrderNewIngredient() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		JButton btnNewButton = new JButton("Confirm");
-		btnNewButton.setBounds(164, 224, 117, 29);
-		contentPane.add(btnNewButton);
 	}
+
 }
