@@ -74,9 +74,13 @@ class simpleJDBC {
 		Statement statement = con.createStatement();
 		ResultSet rs = ExecuteQuery(con, statement, sqlCode, sqlState, columns, table);
 		ResultSetMetaData rsmd = rs.getMetaData();
+		int numCols = rsmd.getColumnCount();
+
+		for (int i = 1; i < numCols; ++i) {
+			System.out.println(rsmd.getColumnName(i) + "\t");
+		}
+		
 		while(rs.next()) {
-			int numCols = rsmd.getColumnCount();
-			
 			for (int i = 1; i < numCols; ++i) {
 				Object colResult = rs.getObject(i);
 				System.out.print(String.valueOf(colResult) + "\t");
