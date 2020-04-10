@@ -77,7 +77,8 @@ class simpleJDBC {
 		int numCols = rsmd.getColumnCount();
 
 		for (int i = 1; i < numCols; ++i) {
-			System.out.println(rsmd.getColumnName(i) + "\t");
+			System.out.print(rsmd.getColumnName(i) + "\t");
+			System.out.print("\n");
 		}
 		
 		while(rs.next()) {
