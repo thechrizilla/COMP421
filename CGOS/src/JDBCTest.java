@@ -26,6 +26,8 @@ class SQLInfo {
 }
 
 class IngredientInfo {
+	public String shipName;
+	public String roomNo;
 	public String type;
 	public String weight;
 }
@@ -227,6 +229,20 @@ class simpleJDBC {
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 		}
 		
+		// Insert the ingredient
+		try {
+			String insertSQL = "INSERT INTO restaurant_orders VALUES (";
+			insertSQL = insertSQL + orderID + ", " + ingredient.roomNo + ", " + ingredient.shipName + ");";
+			System.out.println(insertSQL);
+			info.statement.executeUpdate(insertSQL);
+			System.out.println("Added ingredient with ID " + orderID + " to Ship " + ingredient.shipName + ", room no. " + ingredient.roomNo);
+		} catch (SQLException e) {
+			info.sqlCode = e.getErrorCode(); // Get SQLCODE
+			info.sqlState = e.getSQLState(); // Get SQLSTATE
+			System.out.println("Error adding order to restaurant");
+			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+		}
+		
 		return orderID;
 	}
 	
@@ -264,9 +280,27 @@ class simpleJDBC {
 			
 			stmt2.close();
 			
-			String delSQL = "DELETE FROM ingredients WHERE ingredienttype='Test';";
-			info.statement.executeUpdate(delSQL);
-			System.out.println(delSQL);
+			// Delete all Test ingredients
+			getSQL = "SELECT orderid FROM ingredients WHERE ingredienttype='Test';";
+			Statement stmt3 = info.connection.createStatement();
+			toDelete = stmt3.executeQuery(getSQL);
+			System.out.println(getSQL);
+			
+			// Delete all test groceries from 
+			while (toDelete.next()) {
+				int orderid = toDelete.getInt(1);
+				System.out.println(orderid);
+				String delSQL = "DELETE FROM restaurant_orders WHERE orderid=" + orderid + ";";
+				info.statement.executeUpdate(delSQL);
+				System.out.println(delSQL);
+				
+				delSQL = "DELETE FROM ingredients WHERE grocerybarcode=" + orderid + ";";
+				info.statement.executeUpdate(delSQL);
+				System.out.println(delSQL);
+			}
+			
+			stmt3.close();
+			
 		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
@@ -281,6 +315,8 @@ class simpleJDBC {
 			
 			// Creating test ingredient
 			IngredientInfo ing1 = new IngredientInfo();
+			ing1.shipName = "Titanic";
+			ing1.roomNo = "212";
 			ing1.type = "Test";
 			ing1.weight = "100";
 			int id = user.CreateIngredient(ing1);
