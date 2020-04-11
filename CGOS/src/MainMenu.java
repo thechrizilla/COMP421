@@ -66,14 +66,25 @@ public class MainMenu {
 			frame.getContentPane().add(btnNewButton_1);
 			
 			JButton btnNewButton_2 = new JButton("Order New Ingredients");
+			btnNewButton_2.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					OrderNewIngredient ONI = new OrderNewIngredient();
+					ONI.setVisible(true);
+					frame.dispose();
+				}
+			});
 			btnNewButton_2.setBounds(57, 132, 196, 29);
 			frame.getContentPane().add(btnNewButton_2);
 			
-			JButton btnNewButton_3 = new JButton("Option 4");
+			JButton btnNewButton_3 = new JButton("View and Modify Budgets");
 			btnNewButton_3.setBounds(251, 132, 152, 29);
 			frame.getContentPane().add(btnNewButton_3);
 			
-			JButton btnNewButton_4 = new JButton("Optoin 5");
+			JButton btnNewButton_4 = new JButton("Auto Adjust Budgets");
+			btnNewButton_4.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
 			btnNewButton_4.setBounds(327, 91, 117, 29);
 			frame.getContentPane().add(btnNewButton_4);
 			
