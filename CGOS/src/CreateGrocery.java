@@ -186,13 +186,17 @@ public class CreateGrocery extends JFrame {
 		lblNewLabel_11.setBounds(178, 162, 89, 16);
 		contentPane.add(lblNewLabel_11);
 		
-		JButton btnNewButton = new JButton("Enter");
-		btnNewButton.setBounds(168, 243, 117, 29);
-		contentPane.add(btnNewButton);
+		JButton EnterButton = new JButton("Enter");
+		EnterButton.setBounds(168, 243, 117, 29);
+		contentPane.add(EnterButton);
+		
+		JButton BackButton = new JButton("Back");
+		BackButton.setBounds(6, 243, 117, 29);
+		contentPane.add(BackButton);
 		
 		
 		
-		btnNewButton.addActionListener(new ActionListener() {
+		EnterButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GroceryInstanceInfo g = new GroceryInstanceInfo();
 							
