@@ -10,6 +10,8 @@
 **/
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 class SQLInfo {
 	public Connection connection;
@@ -36,6 +38,12 @@ class IngredientUpdateInfo {
 	public String orderid;
 	public String type = null;
 	public String weight = null;
+}
+
+class RestaurantInfo {
+	public String shipname;
+	public String restaurantName;
+	public String roomNo;
 }
 
 class GroceryInstanceInfo {
@@ -87,7 +95,7 @@ class simpleJDBC {
 		// Need to call this whenever the application is closed!
 		this.info.statement.close();
 		this.info.connection.close();
-		
+
 		System.out.println("Successfully closed statement & connection for User");
 	}
 
@@ -262,53 +270,188 @@ class simpleJDBC {
 	}
 
 	public void UpdateBudget(BudgetUpdateInfo budgetInfo) {
-		try{
-			String updateSQL = "UPDATE restaurant SET restaurantbudget=" + budgetInfo.newBudget
-					+ " WHERE shipname=\'" + budgetInfo.shipname + "\' AND roomnumber=" + budgetInfo.roomNo + ";"; 
+		try {
+			String updateSQL = "UPDATE restaurant SET restaurantbudget=" + budgetInfo.newBudget + " WHERE shipname=\'"
+					+ budgetInfo.shipname + "\' AND roomnumber=" + budgetInfo.roomNo + ";";
 			System.out.println(updateSQL);
 			info.statement.executeUpdate(updateSQL);
-			System.out.println("Updated budget for " + budgetInfo.shipname + ", roomNo. " + budgetInfo.roomNo + " to " + budgetInfo.newBudget);
-		} catch(SQLException e) {
+			System.out.println("Updated budget for " + budgetInfo.shipname + ", roomNo. " + budgetInfo.roomNo + " to "
+					+ budgetInfo.newBudget);
+		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error updating budget");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 		}
 	}
-	
+
 	public void UpdateIngredient(IngredientUpdateInfo ingInfo) {
-		try{
+		try {
 			if (ingInfo.type != null) {
-				String updateSQL = "UPDATE ingredients "
-						+ "SET ingredienttype=\'" + ingInfo.type + "\'"
-						+ " WHERE orderid=" + ingInfo.orderid + ";";
-				System.out.println(updateSQL);
-				info.statement.executeUpdate(updateSQL);
-			}
-			
-			if (ingInfo.weight != null) {
-				String updateSQL = "UPDATE ingredients "
-						+ "SET ingredientweight=" + ingInfo.weight + ""
+				String updateSQL = "UPDATE ingredients " + "SET ingredienttype=\'" + ingInfo.type + "\'"
 						+ " WHERE orderid=" + ingInfo.orderid + ";";
 				System.out.println(updateSQL);
 				info.statement.executeUpdate(updateSQL);
 			}
 
-			/* Update all at once
-			String updateSQL = "UPDATE ingredients "
-					+ "SET ingredienttype=\'" + ingInfo.type + "\', ingredientweight=" + ingInfo.weight + ""
-					+ " WHERE orderid=" + ingInfo.orderid + ";";
-			System.out.println(updateSQL);
-			info.statement.executeUpdate(updateSQL);
-			*/
-			
+			if (ingInfo.weight != null) {
+				String updateSQL = "UPDATE ingredients " + "SET ingredientweight=" + ingInfo.weight + ""
+						+ " WHERE orderid=" + ingInfo.orderid + ";";
+				System.out.println(updateSQL);
+				info.statement.executeUpdate(updateSQL);
+			}
+
+			/*
+			 * Update all at once String updateSQL = "UPDATE ingredients " +
+			 * "SET ingredienttype=\'" + ingInfo.type + "\', ingredientweight=" +
+			 * ingInfo.weight + "" + " WHERE orderid=" + ingInfo.orderid + ";";
+			 * System.out.println(updateSQL); info.statement.executeUpdate(updateSQL);
+			 */
+
 			System.out.println("Updated ingredient " + ingInfo.orderid);
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error updating ingredient");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 		}
+	}
+
+	public String[][] GetIngredientsInfo(RestaurantInfo restaurant) {
+		try {
+			int numRows = -1;
+			String countSQL = "SELECT COUNT(*) FROM ingredients_info" + " WHERE shipname=\'" + restaurant.shipname
+					+ "\' AND restaurant_name=\'" + restaurant.restaurantName + "\';";
+			ResultSet rs = info.statement.executeQuery(countSQL);
+			rs.next();
+			numRows = rs.getInt(1);
+			
+			String querySQL = "SELECT * FROM ingredients_info" + " WHERE shipname=\'" + restaurant.shipname
+					+ "\' AND restaurant_name=\'" + restaurant.restaurantName + "\';";
+			System.out.println(querySQL);
+			rs = info.statement.executeQuery(querySQL);
+			System.out.println("Fetched ingredients for " + restaurant.shipname + ", " + restaurant.restaurantName);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int numCols = rsmd.getColumnCount();
+
+			String[][] table = new String[numRows + 1][numCols];
+			int i = 0;
+			for (int j = 0; j < numCols; ++j) {
+				table[i][j] = rsmd.getColumnName(j+1);
+			}
+
+			i++;
+			while (rs.next()) {
+				for (int j = 0; j < numCols; ++j) {
+					Object colResult = rs.getObject(j+1);
+					table[i][j] = String.valueOf(colResult);
+				}
+				i++;
+			}
+			
+			return table;
+			
+		} catch (SQLException e) {
+			info.sqlCode = e.getErrorCode(); // Get SQLCODE
+			info.sqlState = e.getSQLState(); // Get SQLSTATE
+			System.out.println("Error getting ingredients info");
+			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+		}
+
+		return null;
+	}
+
+	public String[][] GetBudgetInfo(String shipName) {
+		try {
+			int numRows = -1;
+			String countSQL = "SELECT COUNT(*) FROM restaurant WHERE shipname=\'" + shipName + "\';";
+			ResultSet rs = info.statement.executeQuery(countSQL);
+			rs.next();
+			numRows = rs.getInt(1);
+			System.out.println(countSQL);
+			
+			String querySQL = "SELECT roomnumber, restaurantname, capacity, restaurantbudget, usedBudget"
+					+ " FROM restaurant" + " WHERE shipname=\'" + shipName + "\';";
+			System.out.println(querySQL);
+			rs = info.statement.executeQuery(querySQL);
+			System.out.println("Fetched budgets for " + shipName);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int numCols = rsmd.getColumnCount();
+
+			String[][] table = new String[numRows + 1][numCols];
+			int i = 0;
+			for (int j = 0; j < numCols; ++j) {
+				table[i][j] = rsmd.getColumnName(j+1);
+			}
+
+			i++;
+			while (rs.next()) {
+				for (int j = 0; j < numCols; ++j) {
+					Object colResult = rs.getObject(j+1);
+					table[i][j] = String.valueOf(colResult);
+				}
+				i++;
+			}
+			
+			return table;
+		} catch(SQLException e) {
+			info.sqlCode = e.getErrorCode(); // Get SQLCODE
+			info.sqlState = e.getSQLState(); // Get SQLSTATE
+			System.out.println("Error getting restaurant budget info");
+			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+		}
+		
+		return null;
+	}
+	
+	public ArrayList<String> GetShipNames() {
+		try {
+			String querySQL = "SELECT shipname FROM ship;";
+			System.out.println(querySQL);
+			ResultSet rs = info.statement.executeQuery(querySQL);
+			System.out.println("Fetched all ships");
+			
+			ArrayList<String> list = new ArrayList<String>();
+			while(rs.next()) {
+				list.add(rs.getString(1));
+			}
+			
+			return list;
+			
+		} catch(SQLException e) {
+			info.sqlCode = e.getErrorCode(); // Get SQLCODE
+			info.sqlState = e.getSQLState(); // Get SQLSTATE
+			System.out.println("Error getting all ships");
+			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+		}
+		
+		return null;
+	}
+	
+	public ArrayList<String> GetRestaurants(String shipName) {
+		try {
+			String querySQL = "SELECT roomnumber, restaurantname FROM restaurant"
+					+ " WHERE shipname=\'" + shipName + "\';";
+			System.out.println(querySQL);
+			ResultSet rs = info.statement.executeQuery(querySQL);
+			System.out.println("Fetched all restauraunts from ship " + shipName);
+			
+			ArrayList<String> list = new ArrayList<String>();
+			while(rs.next()) {
+				String row = rs.getString(2) + " (" + rs.getInt(1) + ")";
+				list.add(row);
+			}
+			
+			return list;
+			
+		} catch(SQLException e) {
+			info.sqlCode = e.getErrorCode(); // Get SQLCODE
+			info.sqlState = e.getSQLState(); // Get SQLSTATE
+			System.out.println("Error getting restaurants in ship " + shipName);
+			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+		}
+		
+		return null;
 	}
 
 	public void DeleteTestVals() {
@@ -365,6 +508,8 @@ class simpleJDBC {
 			}
 
 			stmt3.close();
+			
+			System.out.println("Successfully deleted all test values");
 
 		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
@@ -420,21 +565,33 @@ class simpleJDBC {
 			gro3.pe_expiryDate = "2020-01-01";
 			gro3.pe_storageTemp = "1000";
 			user.CreateGrocery(gro3);
-			
+
 			BudgetUpdateInfo b1 = new BudgetUpdateInfo();
 			b1.newBudget = "1750";
 			b1.roomNo = "101";
 			b1.shipname = "Celebrity Edge";
 			user.UpdateBudget(b1);
-			
+
 			IngredientUpdateInfo i1 = new IngredientUpdateInfo();
 			i1.orderid = String.valueOf(id);
 			i1.weight = "2000";
 			user.UpdateIngredient(i1);
-			
+
 			// Uncomment this to delete all Test values
 			user.DeleteTestVals();
 
+			ArrayList<String> shipNames = user.GetShipNames();
+			System.out.println("\nAll ship names:");
+			System.out.println(Arrays.toString(shipNames.toArray()));
+			
+			ArrayList<String> restaurantNames = user.GetRestaurants(shipNames.get(0));
+			System.out.println("\nAll restauraunts from " + shipNames.get(0));
+			System.out.println(Arrays.toString(restaurantNames.toArray()));
+			
+			String[][] budgetInfo = user.GetBudgetInfo(shipNames.get(0));
+			System.out.println("\nBudget info for Ship " + shipNames.get(0));
+			System.out.println(Arrays.deepToString(budgetInfo));
+			
 			user.Close();
 
 		} catch (SQLException e) {
