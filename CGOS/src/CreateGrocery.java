@@ -1,5 +1,9 @@
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,11 +42,17 @@ public class CreateGrocery extends JFrame {
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Yes");
 		rdbtnNewRadioButton.setBounds(141, 30, 54, 23);
+		rdbtnNewRadioButton.setActionCommand("Yes");
 		contentPane.add(rdbtnNewRadioButton);
 		
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("No");
 		rdbtnNewRadioButton_1.setBounds(207, 30, 50, 23);
+		rdbtnNewRadioButton_1.setActionCommand("No");
 		contentPane.add(rdbtnNewRadioButton_1);
+		
+		ButtonGroup perishableGroup = new ButtonGroup();
+		perishableGroup.add(rdbtnNewRadioButton);
+		perishableGroup.add(rdbtnNewRadioButton_1);
 		
 		JLabel lblNewLabel_1 = new JLabel("Expiry Date:");
 		lblNewLabel_1.setBounds(63, 62, 87, 16);
@@ -68,11 +78,17 @@ public class CreateGrocery extends JFrame {
 		
 		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Yes");
 		rdbtnNewRadioButton_2.setBounds(330, 30, 54, 23);
+		rdbtnNewRadioButton_2.setActionCommand("Yes");
 		contentPane.add(rdbtnNewRadioButton_2);
 		
 		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("No");
 		rdbtnNewRadioButton_3.setBounds(390, 30, 54, 23);
+		rdbtnNewRadioButton_3.setActionCommand("No");
 		contentPane.add(rdbtnNewRadioButton_3);
+		
+		ButtonGroup produceGroup = new ButtonGroup();
+		produceGroup.add(rdbtnNewRadioButton_2);
+		produceGroup.add(rdbtnNewRadioButton_3);
 		
 		textField_2 = new JTextField();
 		textField_2.setBounds(319, 57, 125, 26);
@@ -144,5 +160,26 @@ public class CreateGrocery extends JFrame {
 		JButton btnNewButton = new JButton("Enter");
 		btnNewButton.setBounds(168, 243, 117, 29);
 		contentPane.add(btnNewButton);
+		
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GroceryInstanceInfo g = new GroceryInstanceInfo();
+				if (perishableGroup.getSelection().getActionCommand().equals("Yes")) {
+					System.out.println("this work?");
+				}
+				else {
+					g.isPerishable = false;
+					System.out.println("hello?");
+				}
+				if (produceGroup.getSelection().getActionCommand().equals("Yes")) {
+					g.isProduce = true;
+					System.out.println("this a produce?");
+				}
+				else {
+					g.isProduce = false;
+					System.out.println("tis not a produce");
+				}
+			}
+		});
 	}
 }
