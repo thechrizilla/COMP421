@@ -226,6 +226,10 @@ public class CreateGrocery extends JFrame {
 				g.weight = WeightTextField.getText();
 				g.dimensions = "(" + LengthTextField.getText() + ", " + WidthTextField.getText() + ", " + HeightTextField.getText() + ")";
 				
+				CreateGroceryConfirm CGC = new CreateGroceryConfirm();
+				CGC.setVisible(true);
+				setVisible(false);
+				
 				try {
 					simpleJDBC user = new simpleJDBC();
 					IngredientInfo ing1 = new IngredientInfo();
