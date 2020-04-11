@@ -58,31 +58,17 @@ public class CreateGrocery extends JFrame {
 		ProduceGroup.add(ProduceNo);
 		
 		//Radio Buttons for Perishable
-		PerishableYes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ProduceYes.setEnabled(true);
-				ProduceNo.setEnabled(true);
-			}
-		});
+
 		
 		PerishableYes.setBounds(141, 30, 54, 23);
 		PerishableYes.setActionCommand("Yes");
 		contentPane.add(PerishableYes);
-		
-		//Disabling User from Clicking Yes or No for Produce
-		PerishableNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ProduceGroup.clearSelection();
-				ProduceYes.setEnabled(false);
-				ProduceNo.setEnabled(false);
-			}
-		});
+	
 		
 		PerishableNo.setBounds(207, 30, 50, 23);
 		PerishableNo.setActionCommand("No");
 		contentPane.add(PerishableNo);
 		
-
 		
 		// Radio Buttons for Produce
 
@@ -97,13 +83,13 @@ public class CreateGrocery extends JFrame {
 		
 
 		
-		JLabel lblNewLabel_1 = new JLabel("Expiry Date:");
-		lblNewLabel_1.setBounds(63, 62, 87, 16);
-		contentPane.add(lblNewLabel_1);
+		JLabel expiryDateLabel = new JLabel("Expiry Date:");
+		expiryDateLabel.setBounds(63, 62, 87, 16);
+		contentPane.add(expiryDateLabel);
 		
-		JLabel lblNewLabel_2 = new JLabel("Storage Temperature:");
-		lblNewLabel_2.setBounds(6, 90, 144, 16);
-		contentPane.add(lblNewLabel_2);
+		JLabel storageTempLabel = new JLabel("Storage Temperature:");
+		storageTempLabel.setBounds(6, 90, 144, 16);
+		contentPane.add(storageTempLabel);
 		
 		ExpiryDateTextField = new JTextField();
 		ExpiryDateTextField.setBounds(141, 57, 116, 26);
@@ -115,18 +101,62 @@ public class CreateGrocery extends JFrame {
 		contentPane.add(StorageTemperatureTextField);
 		StorageTemperatureTextField.setColumns(10);
 		
-		JLabel lblNewLabel_3 = new JLabel("Produce?");
-		lblNewLabel_3.setBounds(269, 34, 61, 16);
-		contentPane.add(lblNewLabel_3);
+		JLabel produceLabel = new JLabel("Produce?");
+		produceLabel.setBounds(269, 34, 61, 16);
+		contentPane.add(produceLabel);
 		
 		SeasonTextField = new JTextField();
 		SeasonTextField.setBounds(319, 57, 125, 26);
 		contentPane.add(SeasonTextField);
 		SeasonTextField.setColumns(10);
 		
-		JLabel lblNewLabel_4 = new JLabel("Season:");
-		lblNewLabel_4.setBounds(269, 62, 50, 16);
-		contentPane.add(lblNewLabel_4);
+		JLabel seasonLabel = new JLabel("Season:");
+		seasonLabel.setBounds(269, 62, 50, 16);
+		contentPane.add(seasonLabel);
+		
+		ProduceYes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				seasonLabel.setEnabled(true);
+				SeasonTextField.setEnabled(true);
+			}
+		});
+		
+		ProduceNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				seasonLabel.setEnabled(false);
+				SeasonTextField.setEnabled(false);
+			}
+		});
+		
+		//Disabling User from Clicking Yes or No for Produce
+		PerishableNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProduceGroup.clearSelection();
+				ProduceYes.setEnabled(false);
+				ProduceNo.setEnabled(false);
+				produceLabel.setEnabled(false);
+				seasonLabel.setEnabled(false);
+				SeasonTextField.setEnabled(false);
+				expiryDateLabel.setEnabled(false);
+				ExpiryDateTextField.setEnabled(false);
+				storageTempLabel.setEnabled(false);
+				StorageTemperatureTextField.setEnabled(false);
+			}
+		});
+		
+		PerishableYes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProduceYes.setEnabled(true);
+				ProduceNo.setEnabled(true);
+				produceLabel.setEnabled(true);
+				seasonLabel.setEnabled(true);
+				SeasonTextField.setEnabled(true);
+				expiryDateLabel.setEnabled(true);
+				ExpiryDateTextField.setEnabled(true);
+				storageTempLabel.setEnabled(true);
+				StorageTemperatureTextField.setEnabled(true);
+			}
+		});
 		
 		JLabel lblNewLabel_5 = new JLabel("Type:");
 		lblNewLabel_5.setBounds(63, 128, 34, 16);
