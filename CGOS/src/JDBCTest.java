@@ -232,7 +232,7 @@ class simpleJDBC {
 		// Insert the ingredient
 		try {
 			String insertSQL = "INSERT INTO restaurant_orders VALUES (";
-			insertSQL = insertSQL + orderID + ", " + ingredient.roomNo + ", " + ingredient.shipName + ");";
+			insertSQL = insertSQL + orderID + ", " + ingredient.roomNo + ", \'" + ingredient.shipName + "\');";
 			System.out.println(insertSQL);
 			info.statement.executeUpdate(insertSQL);
 			System.out.println("Added ingredient with ID " + orderID + " to Ship " + ingredient.shipName + ", room no. " + ingredient.roomNo);
