@@ -294,7 +294,7 @@ class simpleJDBC {
 				info.statement.executeUpdate(delSQL);
 				System.out.println(delSQL);
 				
-				delSQL = "DELETE FROM ingredients WHERE grocerybarcode=" + orderid + ";";
+				delSQL = "DELETE FROM ingredients WHERE orderid=" + orderid + ";";
 				info.statement.executeUpdate(delSQL);
 				System.out.println(delSQL);
 			}
