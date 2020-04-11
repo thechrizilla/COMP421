@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JTable;
 
 public class CreateGrocery extends JFrame {
 
@@ -31,7 +32,7 @@ public class CreateGrocery extends JFrame {
 	 */
 	public CreateGrocery() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 482, 329);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -254,7 +255,11 @@ public class CreateGrocery extends JFrame {
 				g.price = PriceTextField.getText();
 				g.pe_expiryDate = ExpiryDateTextField.getText();
 				g.weight = WeightTextField.getText();
-				g.dimensions = "(" + LengthTextField.getText() + ", " + WidthTextField.getText() + ", " + HeightTextField.getText() + ")";
+				g.dimensions = "(" + 
+						HeightTextField.getText() + ", " + 
+						WidthTextField.getText() + ", " + 
+						LengthTextField.getText() +
+						")";
 				
 				CreateGroceryConfirm CGC = new CreateGroceryConfirm();
 				CGC.setVisible(true);
