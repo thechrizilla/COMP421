@@ -317,7 +317,8 @@ class simpleJDBC {
 		}
 	}
 
-	public String[][] GetIngredientsInfo(RestaurantInfo restaurant) {
+	// This function needs restaurant.shipName and restaurant.restaurantName
+	public String[][] GetRestaurantOrders(RestaurantInfo restaurant) {
 		try {
 			int numRows = -1;
 			String countSQL = "SELECT COUNT(*) FROM ingredients_info" + " WHERE shipname=\'" + restaurant.shipname
@@ -453,7 +454,7 @@ class simpleJDBC {
 		
 		return null;
 	}
-
+	
 	public void DeleteTestVals() {
 		try {
 			System.out.println("\nDeleting test values...");
@@ -590,7 +591,24 @@ class simpleJDBC {
 			
 			String[][] budgetInfo = user.GetBudgetInfo(shipNames.get(0));
 			System.out.println("\nBudget info for Ship " + shipNames.get(0));
-			System.out.println(Arrays.deepToString(budgetInfo));
+			for(int i = 0; i < budgetInfo.length; ++i) {
+				for(int j = 0; j < budgetInfo[0].length; ++j) {
+					System.out.print(budgetInfo[i][j]);
+				}
+				System.out.println();
+			}
+			
+			RestaurantInfo r1 = new RestaurantInfo();
+			r1.shipname = "Titanic";
+			r1.restaurantName = "Pizza Pizza";
+			String[][] restaurantOrders = user.GetRestaurantOrders(r1);
+			System.out.println("\nOrders for " + r1.shipname + ", " + r1.restaurantName);
+			for(int i = 0; i < restaurantOrders.length; ++i) {
+				for(int j = 0; j < restaurantOrders[0].length; ++j) {
+					System.out.print(restaurantOrders[i][j]);
+				}
+				System.out.println();
+			}
 			
 			user.Close();
 
