@@ -519,6 +519,8 @@ class simpleJDBC {
 		delSQL = "DELETE FROM grocery WHERE grocerybarcode=" + barcode + ";";
 		info.statement.executeUpdate(delSQL);
 		System.out.println(delSQL);
+		
+		UpdateUsedBudgets();
 	}
 
 	public void DeleteIngredient(int orderid) throws SQLException {
