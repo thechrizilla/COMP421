@@ -2,10 +2,14 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class MainMenu extends JFrame {
@@ -14,8 +18,9 @@ public class MainMenu extends JFrame {
 
 	/**
 	 * Launch the application.
+	 * @throws SQLException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -30,9 +35,31 @@ public class MainMenu extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
 	 */
-	public MainMenu() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public MainMenu() throws SQLException {
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		simpleJDBC.getInstance();
+		this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent evt){
+                int x = JOptionPane.showConfirmDialog(null, 
+                    "Are you sure you want to quit?", "Confirmation",
+                    JOptionPane.YES_NO_OPTION);
+
+                if (x == JOptionPane.YES_OPTION) {
+                	try {
+						simpleJDBC.getInstance().Close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                }else{
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
+		
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -76,6 +103,26 @@ public class MainMenu extends JFrame {
 		JButton QuitButton = new JButton("Quit");
 		QuitButton.setBounds(162, 214, 117, 29);
 		contentPane.add(QuitButton);
+		QuitButton.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent evt){
+	                int x = JOptionPane.showConfirmDialog(null, 
+	                    "Are you sure you want to quit?", "Confirmation",
+	                    JOptionPane.YES_NO_OPTION);
+
+	                if (x == JOptionPane.YES_OPTION) {
+	                	try {
+							simpleJDBC.getInstance().Close();
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	                    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	                    dispose();
+	                }else{
+	                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	                }
+	            }
+		});
 	}
 
 }

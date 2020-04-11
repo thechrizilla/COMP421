@@ -1,6 +1,8 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.ButtonGroup;
@@ -8,6 +10,7 @@ import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -31,7 +34,25 @@ public class CreateGrocery extends JFrame {
 	 * Create the frame.
 	 */
 	public CreateGrocery() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent evt){
+                int x = JOptionPane.showConfirmDialog(null, 
+                    "Are you sure you want to quit?", "Confirmation",
+                    JOptionPane.YES_NO_OPTION);
+
+                if (x == JOptionPane.YES_OPTION) {
+                	try {
+						simpleJDBC.getInstance().Close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                }else{
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
 		setBounds(100, 100, 482, 329);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -266,18 +287,17 @@ public class CreateGrocery extends JFrame {
 				setVisible(false);
 				
 				try {
-					simpleJDBC user = new simpleJDBC();
+					
 					IngredientInfo ing1 = new IngredientInfo();
 					ing1.shipName = "Titanic";
 					ing1.roomNo = "212";
 					ing1.type = "Test";
 					ing1.weight = "100";
-					int id = user.CreateIngredient(ing1);
+					int id = simpleJDBC.getInstance().CreateIngredient(ing1);
 					g.orderID = String.valueOf(id);
-					user.CreateGrocery(g);
+					simpleJDBC.getInstance().CreateGrocery(g);
 					
 					System.out.println("Grocery created????");
-					user.Close();
 				} catch (SQLException e1) {
 					System.out.println("Couldnt add");
 					// TODO Auto-generated catch block

@@ -5,10 +5,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class OrderNewIngredient extends JFrame {
@@ -16,10 +20,28 @@ public class OrderNewIngredient extends JFrame {
 	private JPanel contentPane;
 	private JTextField IngredientTypeTextField;
 	private JTextField WeightTextfield;
-	MainMenu MM = new MainMenu();
+	MainMenu MM;
 
 	public OrderNewIngredient() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent evt){
+                int x = JOptionPane.showConfirmDialog(null, 
+                    "Are you sure you want to quit?", "Confirmation",
+                    JOptionPane.YES_NO_OPTION);
+
+                if (x == JOptionPane.YES_OPTION) {
+                	try {
+						simpleJDBC.getInstance().Close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                }else{
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -71,8 +93,15 @@ public class OrderNewIngredient extends JFrame {
 		JButton BackButton = new JButton("Back");
 		BackButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MainMenu MM = new MainMenu();
-				MM.setVisible(true);
+				MainMenu MM;
+				try {
+					MM = new MainMenu();
+					MM.setVisible(true);
+					dispose();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 			}
 		});
