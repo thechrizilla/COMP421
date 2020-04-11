@@ -80,8 +80,14 @@ public class MainMenu extends JFrame {
 		JButton OrderNewIngredientButton = new JButton("Order New Ingredient");
 		OrderNewIngredientButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OrderNewIngredient ONI = new OrderNewIngredient();
-				ONI.setVisible(true);
+				OrderNewIngredient ONI;
+				try {
+					ONI = new OrderNewIngredient();
+					ONI.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dispose();
 			}
 		});

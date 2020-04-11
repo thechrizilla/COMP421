@@ -13,16 +13,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 
 public class OrderNewIngredient extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField IngredientTypeTextField;
-	private JTextField WeightTextfield;
+	private JTextField WeightTextField;
 	MainMenu MM;
 
-	public OrderNewIngredient() {
+	public OrderNewIngredient() throws SQLException {
 		this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent evt){
                 int x = JOptionPane.showConfirmDialog(null, 
@@ -52,9 +54,9 @@ public class OrderNewIngredient extends JFrame {
 		lblNewLabel.setBounds(129, 66, 71, 16);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Restaurant Name:");
-		lblNewLabel_1.setBounds(89, 94, 111, 16);
-		contentPane.add(lblNewLabel_1);
+		JLabel restaurantNameLabel = new JLabel("Restaurant Name:");
+		restaurantNameLabel.setBounds(89, 94, 111, 16);
+		contentPane.add(restaurantNameLabel);
 		
 		JLabel lblNewLabel_2 = new JLabel("Ingredient Type:");
 		lblNewLabel_2.setBounds(98, 122, 102, 16);
@@ -64,27 +66,70 @@ public class OrderNewIngredient extends JFrame {
 		lblNewLabel_3.setBounds(153, 150, 47, 16);
 		contentPane.add(lblNewLabel_3);
 		
-		JComboBox ShipNameComboBox = new JComboBox();
+		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
 		ShipNameComboBox.setBounds(212, 62, 130, 27);
 		contentPane.add(ShipNameComboBox);
-		
+
 		JComboBox RestaurantComboBox = new JComboBox();
 		RestaurantComboBox.setBounds(212, 90, 130, 27);
 		contentPane.add(RestaurantComboBox);
+		RestaurantComboBox.setEnabled(false);
+		restaurantNameLabel.setEnabled(false);
+		
+		ShipNameComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ArrayList<String> restaurants = simpleJDBC.getInstance().GetRestaurants(ShipNameComboBox.getSelectedItem().toString());
+					RestaurantComboBox.removeAllItems();
+					for (String r : restaurants) {
+						RestaurantComboBox.addItem(r);
+					}
+					RestaurantComboBox.setEnabled(true);
+					restaurantNameLabel.setEnabled(true);
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		
 		IngredientTypeTextField = new JTextField();
 		IngredientTypeTextField.setBounds(212, 117, 130, 26);
 		contentPane.add(IngredientTypeTextField);
 		IngredientTypeTextField.setColumns(10);
 		
-		WeightTextfield = new JTextField();
-		WeightTextfield.setBounds(212, 145, 130, 26);
-		contentPane.add(WeightTextfield);
-		WeightTextfield.setColumns(10);
+		WeightTextField = new JTextField();
+		WeightTextField.setBounds(212, 145, 130, 26);
+		contentPane.add(WeightTextField);
+		WeightTextField.setColumns(10);
 		
 		JButton OrderButton = new JButton("Order");
 		OrderButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				IngredientInfo ing = new IngredientInfo();
+				ing.shipName = ShipNameComboBox.getSelectedItem().toString();
+				ing.type = IngredientTypeTextField.getText();
+				ing.weight = WeightTextField.getText();
+				
+				String restString = RestaurantComboBox.getSelectedItem().toString();
+				StringBuilder roomNo = new StringBuilder();
+				
+				for (int i = restString.length() - 1; i != 0; i--) {
+					if (restString.charAt(i) == ')') continue;
+					if (restString.charAt(i) == '(') break;
+					roomNo.append(restString.charAt(i));
+				}
+				
+				ing.roomNo = roomNo.reverse().toString();
+				
+				try {
+					simpleJDBC.getInstance().CreateIngredient(ing);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		OrderButton.setBounds(169, 219, 117, 29);

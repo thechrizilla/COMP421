@@ -440,7 +440,7 @@ class simpleJDBC {
 		return null;
 	}
 	
-	public ArrayList<String[]> GetRestaurants(String shipName) {
+	public ArrayList<String> GetRestaurants(String shipName) {
 		try {
 			String querySQL = "SELECT roomnumber, restaurantname FROM restaurant"
 					+ " WHERE shipname=\'" + shipName + "\';";
@@ -448,11 +448,9 @@ class simpleJDBC {
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched all restauraunts from ship " + shipName);
 			
-			ArrayList<String[]> list = new ArrayList<String[]>();
+			ArrayList<String> list = new ArrayList<String>();
 			while(rs.next()) {
-				String[] row = new String[2];
-				row[0] = rs.getString(2);
-				row[1] = String.valueOf(rs.getInt(1));
+				String row = rs.getString(2) + " (" + rs.getInt(1) + ")";
 				list.add(row);
 			}
 			
@@ -636,7 +634,7 @@ class simpleJDBC {
 		System.out.println("\nAll ship names:");
 		System.out.println(Arrays.toString(shipNames.toArray()));
 		
-		ArrayList<String[]> restaurantNames = user.GetRestaurants(shipNames.get(0));
+		ArrayList<String> restaurantNames = user.GetRestaurants(shipNames.get(0));
 		System.out.println("\nAll restauraunts from " + shipNames.get(0));
 		System.out.println(Arrays.toString(restaurantNames.toArray()));
 		
