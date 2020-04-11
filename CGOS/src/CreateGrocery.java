@@ -1,6 +1,7 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -194,9 +195,18 @@ public class CreateGrocery extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GroceryInstanceInfo g = new GroceryInstanceInfo();
+							
 				if (PerishableGroup.getSelection().getActionCommand().equals("Yes")) {
+					g.isPerishable = true;
 					ProduceNo.setEnabled(true);
 					ProduceYes.setEnabled(true);	
+					
+					if (ProduceGroup.getSelection().getActionCommand().equals("Yes")) {
+						g.isProduce = true;
+					}
+					else {
+						g.isProduce = false;
+					}
 				}
 				else {
 					g.isPerishable = false;
@@ -204,14 +214,34 @@ public class CreateGrocery extends JFrame {
 					ProduceYes.setEnabled(false);
 				}
 				
-				if (ProduceGroup.getSelection().getActionCommand().equals("Yes")) {
-					g.isProduce = true;
-					System.out.println("this a produce?");
+				g.pe_storageTemp = StorageTemperatureTextField.getText();
+				g.type = TypeTextField.getText();
+				g.pr_season = SeasonTextField.getText();
+				g.price = PriceTextField.getText();
+				g.pe_expiryDate = ExpiryDateTextField.getText();
+				g.weight = WeightTextField.getText();
+				g.dimensions = "(" + LengthTextField.getText() + ", " + WidthTextField.getText() + ", " + HeightTextField.getText() + ")";
+				
+				try {
+					simpleJDBC user = new simpleJDBC();
+					IngredientInfo ing1 = new IngredientInfo();
+					ing1.shipName = "Titanic";
+					ing1.roomNo = "212";
+					ing1.type = "Test";
+					ing1.weight = "100";
+					int id = user.CreateIngredient(ing1);
+					g.orderID = String.valueOf(id);
+					user.CreateGrocery(g);
+					
+					System.out.println("Grocery created????");
+					user.Close();
+				} catch (SQLException e1) {
+					System.out.println("Couldnt add");
+					// TODO Auto-generated catch block
+					
+					e1.printStackTrace();
 				}
-				else {
-					g.isProduce = false;
-					System.out.println("tis not a produce");
-				}
+
 			}
 		});
 	}
