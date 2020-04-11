@@ -88,7 +88,7 @@ class simpleJDBC {
 		SQLInfo info = new SQLInfo(con, statement, sqlCode, sqlState);
 		this.info = info;
 
-		System.out.println("JDBC User Constructor Finished");
+		System.out.println("JDBC User Constructor Succeeded & Finished");
 	}
 
 	public void Close() throws SQLException {
@@ -429,7 +429,7 @@ class simpleJDBC {
 		return null;
 	}
 	
-	public ArrayList<String> GetRestaurants(String shipName) {
+	public ArrayList<String[]> GetRestaurants(String shipName) {
 		try {
 			String querySQL = "SELECT roomnumber, restaurantname FROM restaurant"
 					+ " WHERE shipname=\'" + shipName + "\';";
@@ -437,9 +437,11 @@ class simpleJDBC {
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched all restauraunts from ship " + shipName);
 			
-			ArrayList<String> list = new ArrayList<String>();
+			ArrayList<String[]> list = new ArrayList<String[]>();
 			while(rs.next()) {
-				String row = rs.getString(2) + " (" + rs.getInt(1) + ")";
+				String[] row = new String[2];
+				row[0] = rs.getString(2);
+				row[1] = String.valueOf(rs.getInt(1));
 				list.add(row);
 			}
 			
@@ -451,6 +453,12 @@ class simpleJDBC {
 			System.out.println("Error getting restaurants in ship " + shipName);
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 		}
+		
+		return null;
+	}
+	
+	public String[][] AutoAdjustBudgets(){
+		
 		
 		return null;
 	}
@@ -523,98 +531,123 @@ class simpleJDBC {
 	public static void main(String[] args) {
 		try {
 			simpleJDBC user = new simpleJDBC();
-
-			// Creating test ingredient
-			IngredientInfo ing1 = new IngredientInfo();
-			ing1.shipName = "Titanic";
-			ing1.roomNo = "212";
-			ing1.type = "Test";
-			ing1.weight = "100";
-			int id = user.CreateIngredient(ing1);
-
-			// Create a non-perishable
-			GroceryInstanceInfo gro1 = new GroceryInstanceInfo();
-			gro1.type = "Test";
-			gro1.weight = "100";
-			gro1.price = "10";
-			gro1.dimensions = "(10, 10, 10)";
-			gro1.orderID = String.valueOf(id);
-			user.CreateGrocery(gro1);
-
-			// Create a perishable but not a produce
-			GroceryInstanceInfo gro2 = new GroceryInstanceInfo();
-			gro2.type = "Test";
-			gro2.weight = "200";
-			gro2.price = "20";
-			gro2.dimensions = "(20, 20, 20)";
-			gro2.orderID = String.valueOf(id);
-			gro2.isPerishable = true;
-			gro2.pe_expiryDate = "2020-01-01";
-			gro2.pe_storageTemp = "1000";
-			gro2.isProduce = true;
-			gro2.pr_season = "Winter";
-			user.CreateGrocery(gro2);
-
-			// Create a produce
-			GroceryInstanceInfo gro3 = new GroceryInstanceInfo();
-			gro3.type = "Test";
-			gro3.weight = "200";
-			gro3.price = "20";
-			gro3.dimensions = "(20, 20, 20)";
-			gro3.orderID = String.valueOf(id);
-			gro3.isPerishable = true;
-			gro3.pe_expiryDate = "2020-01-01";
-			gro3.pe_storageTemp = "1000";
-			user.CreateGrocery(gro3);
-
-			BudgetUpdateInfo b1 = new BudgetUpdateInfo();
-			b1.newBudget = "1750";
-			b1.roomNo = "101";
-			b1.shipname = "Celebrity Edge";
-			user.UpdateBudget(b1);
-
-			IngredientUpdateInfo i1 = new IngredientUpdateInfo();
-			i1.orderid = String.valueOf(id);
-			i1.weight = "2000";
-			user.UpdateIngredient(i1);
-
-			// Uncomment this to delete all Test values
+			
+//			TestCases(user);
+//			TestFunction(user);
 			user.DeleteTestVals();
-
-			ArrayList<String> shipNames = user.GetShipNames();
-			System.out.println("\nAll ship names:");
-			System.out.println(Arrays.toString(shipNames.toArray()));
-			
-			ArrayList<String> restaurantNames = user.GetRestaurants(shipNames.get(0));
-			System.out.println("\nAll restauraunts from " + shipNames.get(0));
-			System.out.println(Arrays.toString(restaurantNames.toArray()));
-			
-			String[][] budgetInfo = user.GetBudgetInfo(shipNames.get(0));
-			System.out.println("\nBudget info for Ship " + shipNames.get(0));
-			for(int i = 0; i < budgetInfo.length; ++i) {
-				for(int j = 0; j < budgetInfo[0].length; ++j) {
-					System.out.print(budgetInfo[i][j]);
-				}
-				System.out.println();
-			}
-			
-			RestaurantInfo r1 = new RestaurantInfo();
-			r1.shipname = "Titanic";
-			r1.restaurantName = "Pizza Pizza";
-			String[][] restaurantOrders = user.GetRestaurantOrders(r1);
-			System.out.println("\nOrders for " + r1.shipname + ", " + r1.restaurantName);
-			for(int i = 0; i < restaurantOrders.length; ++i) {
-				for(int j = 0; j < restaurantOrders[0].length; ++j) {
-					System.out.print(restaurantOrders[i][j]);
-				}
-				System.out.println();
-			}
 			
 			user.Close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public static void TestFunction(simpleJDBC user) {
+		// Creating test ingredient
+		IngredientInfo ing1 = new IngredientInfo();
+		ing1.shipName = "Titanic";
+		ing1.roomNo = "301";
+		ing1.type = "Test";
+		ing1.weight = "1000";
+		int id = user.CreateIngredient(ing1);
+
+		// Create a non-perishable
+		GroceryInstanceInfo gro1 = new GroceryInstanceInfo();
+		gro1.type = "Test";
+		gro1.weight = "100";
+		gro1.price = "50";
+		gro1.dimensions = "(10, 10, 10)";
+		gro1.orderID = String.valueOf(id);
+		user.CreateGrocery(gro1);
+	}
+	
+	public static void TestCases(simpleJDBC user) {
+		// Creating test ingredient
+		IngredientInfo ing1 = new IngredientInfo();
+		ing1.shipName = "Titanic";
+		ing1.roomNo = "212";
+		ing1.type = "Test";
+		ing1.weight = "100";
+		int id = user.CreateIngredient(ing1);
+
+		// Create a non-perishable
+		GroceryInstanceInfo gro1 = new GroceryInstanceInfo();
+		gro1.type = "Test";
+		gro1.weight = "100";
+		gro1.price = "10";
+		gro1.dimensions = "(10, 10, 10)";
+		gro1.orderID = String.valueOf(id);
+		user.CreateGrocery(gro1);
+
+		// Create a perishable but not a produce
+		GroceryInstanceInfo gro2 = new GroceryInstanceInfo();
+		gro2.type = "Test";
+		gro2.weight = "200";
+		gro2.price = "20";
+		gro2.dimensions = "(20, 20, 20)";
+		gro2.orderID = String.valueOf(id);
+		gro2.isPerishable = true;
+		gro2.pe_expiryDate = "2020-01-01";
+		gro2.pe_storageTemp = "1000";
+		gro2.isProduce = true;
+		gro2.pr_season = "Winter";
+		user.CreateGrocery(gro2);
+
+		// Create a produce
+		GroceryInstanceInfo gro3 = new GroceryInstanceInfo();
+		gro3.type = "Test";
+		gro3.weight = "200";
+		gro3.price = "20";
+		gro3.dimensions = "(20, 20, 20)";
+		gro3.orderID = String.valueOf(id);
+		gro3.isPerishable = true;
+		gro3.pe_expiryDate = "2020-01-01";
+		gro3.pe_storageTemp = "1000";
+		user.CreateGrocery(gro3);
+
+		BudgetUpdateInfo b1 = new BudgetUpdateInfo();
+		b1.newBudget = "1750";
+		b1.roomNo = "101";
+		b1.shipname = "Celebrity Edge";
+		user.UpdateBudget(b1);
+
+		IngredientUpdateInfo i1 = new IngredientUpdateInfo();
+		i1.orderid = String.valueOf(id);
+		i1.weight = "2000";
+		user.UpdateIngredient(i1);
+
+		// Uncomment this to delete all Test values
+		user.DeleteTestVals();
+
+		ArrayList<String> shipNames = user.GetShipNames();
+		System.out.println("\nAll ship names:");
+		System.out.println(Arrays.toString(shipNames.toArray()));
+		
+		ArrayList<String> restaurantNames = user.GetRestaurants(shipNames.get(0));
+		System.out.println("\nAll restauraunts from " + shipNames.get(0));
+		System.out.println(Arrays.toString(restaurantNames.toArray()));
+		
+		String[][] budgetInfo = user.GetBudgetInfo(shipNames.get(0));
+		System.out.println("\nBudget info for Ship " + shipNames.get(0));
+		for(int i = 0; i < budgetInfo.length; ++i) {
+			for(int j = 0; j < budgetInfo[0].length; ++j) {
+				System.out.print(budgetInfo[i][j]);
+			}
+			System.out.println();
+		}
+		
+		RestaurantInfo r1 = new RestaurantInfo();
+		r1.shipname = "Titanic";
+		r1.restaurantName = "Pizza Pizza";
+		String[][] restaurantOrders = user.GetRestaurantOrders(r1);
+		System.out.println("\nOrders for " + r1.shipname + ", " + r1.restaurantName);
+		for(int i = 0; i < restaurantOrders.length; ++i) {
+			for(int j = 0; j < restaurantOrders[0].length; ++j) {
+				System.out.print(restaurantOrders[i][j]);
+			}
+			System.out.println();
 		}
 	}
 }
