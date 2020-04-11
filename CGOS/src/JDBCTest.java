@@ -636,7 +636,7 @@ class simpleJDBC {
 		System.out.println("\nAll ship names:");
 		System.out.println(Arrays.toString(shipNames.toArray()));
 		
-		ArrayList<String> restaurantNames = user.GetRestaurants(shipNames.get(0));
+		ArrayList<String[]> restaurantNames = user.GetRestaurants(shipNames.get(0));
 		System.out.println("\nAll restauraunts from " + shipNames.get(0));
 		System.out.println(Arrays.toString(restaurantNames.toArray()));
 		
