@@ -32,6 +32,12 @@ class IngredientInfo {
 	public String weight;
 }
 
+class IngredientUpdateInfo {
+	public String orderid;
+	public String type = null;
+	public String weight = null;
+}
+
 class GroceryInstanceInfo {
 	public boolean isPerishable = false;
 	public boolean isProduce = false;
@@ -167,7 +173,7 @@ class simpleJDBC {
 				System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 			}
 
-			// Is grocery
+			// Is perishable & produce
 			if (grocery.isProduce) {
 				try {
 					String insertSQL = "INSERT INTO produce VALUES (";
@@ -266,6 +272,41 @@ class simpleJDBC {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error updating budget");
+			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+		}
+	}
+	
+	public void UpdateIngredient(IngredientUpdateInfo ingInfo) {
+		try{
+			if (ingInfo.type != null) {
+				String updateSQL = "UPDATE ingredients "
+						+ "SET ingredienttype=\'" + ingInfo.type + "\'"
+						+ " WHERE orderid=" + ingInfo.orderid + ";";
+				System.out.println(updateSQL);
+				info.statement.executeUpdate(updateSQL);
+			}
+			
+			if (ingInfo.weight != null) {
+				String updateSQL = "UPDATE ingredients "
+						+ "SET ingredientweight=" + ingInfo.weight + ""
+						+ " WHERE orderid=" + ingInfo.orderid + ";";
+				System.out.println(updateSQL);
+				info.statement.executeUpdate(updateSQL);
+			}
+
+			/* Update all at once
+			String updateSQL = "UPDATE ingredients "
+					+ "SET ingredienttype=\'" + ingInfo.type + "\', ingredientweight=" + ingInfo.weight + ""
+					+ " WHERE orderid=" + ingInfo.orderid + ";";
+			System.out.println(updateSQL);
+			info.statement.executeUpdate(updateSQL);
+			*/
+			
+			System.out.println("Updated ingredient " + ingInfo.orderid);
+		} catch(SQLException e) {
+			info.sqlCode = e.getErrorCode(); // Get SQLCODE
+			info.sqlState = e.getSQLState(); // Get SQLSTATE
+			System.out.println("Error updating ingredient");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 		}
 	}
@@ -385,7 +426,12 @@ class simpleJDBC {
 			b1.roomNo = "101";
 			b1.shipname = "Celebrity Edge";
 			user.UpdateBudget(b1);
-
+			
+			IngredientUpdateInfo i1 = new IngredientUpdateInfo();
+			i1.orderid = String.valueOf(id);
+			i1.weight = "2000";
+			user.UpdateIngredient(i1);
+			
 			// Uncomment this to delete all Test values
 			user.DeleteTestVals();
 
