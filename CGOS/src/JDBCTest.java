@@ -69,6 +69,12 @@ class simpleJDBC {
 			System.out.println("JDBC User Constructor Finished");
 	}
 	
+	public void Close() throws SQLException {
+		// Need to call this whenever the application is closed!
+		this.info.statement.close();
+		this.info.connection.close();
+	}
+	
 	public ResultSet ExecuteQuery(String[] columns, String tableName) throws SQLException {
 		try {
 			String selectSQL = "SELECT ";
@@ -317,9 +323,7 @@ class simpleJDBC {
 			// Uncomment this to delete all Test values
 //			user.DeleteTestVals();
 			
-			user.info.statement.close();
-			user.info.connection.close();
-			
+			user.Close();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
