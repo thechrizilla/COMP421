@@ -67,8 +67,11 @@ class BudgetUpdateInfo {
 
 class simpleJDBC {
 	public SQLInfo info;
-
-	public simpleJDBC() throws SQLException {
+	
+	// singleton
+	private static simpleJDBC INSTANCE = null;
+	
+	private simpleJDBC() throws SQLException {
 		int sqlCode = 0; // Variable to hold SQLCODE
 		String sqlState = "00000"; // Variable to hold SQLSTATE
 
@@ -90,6 +93,14 @@ class simpleJDBC {
 
 		System.out.println("JDBC User Constructor Finished");
 	}
+	
+	public static simpleJDBC getInstance() throws SQLException 
+    { 
+        if (INSTANCE == null) 
+        	INSTANCE = new simpleJDBC(); 
+  
+        return INSTANCE; 
+    } 
 
 	public void Close() throws SQLException {
 		// Need to call this whenever the application is closed!
