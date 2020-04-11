@@ -15,15 +15,15 @@ import javax.swing.border.EmptyBorder;
 public class CreateGrocery extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
+	private JTextField ExpiryDateTextField;
+	private JTextField StorageTemperatureTextField;
+	private JTextField SeasonTextField;
+	private JTextField TypeTextField;
+	private JTextField WeightTextField;
+	private JTextField PriceTextField;
+	private JTextField HeightTextField;
+	private JTextField WidthTextField;
+	private JTextField LengthTextField;
 
 	/**
 	 * Create the frame.
@@ -40,19 +40,61 @@ public class CreateGrocery extends JFrame {
 		lblNewLabel.setBounds(65, 34, 78, 16);
 		contentPane.add(lblNewLabel);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Yes");
-		rdbtnNewRadioButton.setBounds(141, 30, 54, 23);
-		rdbtnNewRadioButton.setActionCommand("Yes");
-		contentPane.add(rdbtnNewRadioButton);
 		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("No");
-		rdbtnNewRadioButton_1.setBounds(207, 30, 50, 23);
-		rdbtnNewRadioButton_1.setActionCommand("No");
-		contentPane.add(rdbtnNewRadioButton_1);
+		// Radio Buttons
+		JRadioButton PerishableYes = new JRadioButton("Yes");
+		JRadioButton PerishableNo = new JRadioButton("No");
+		JRadioButton ProduceYes = new JRadioButton("Yes");
+		JRadioButton ProduceNo = new JRadioButton("No");
 		
-		ButtonGroup perishableGroup = new ButtonGroup();
-		perishableGroup.add(rdbtnNewRadioButton);
-		perishableGroup.add(rdbtnNewRadioButton_1);
+		// Button Group
+		ButtonGroup PerishableGroup = new ButtonGroup();
+		PerishableGroup.add(PerishableYes);
+		PerishableGroup.add(PerishableNo);
+		
+		ButtonGroup ProduceGroup = new ButtonGroup();
+		ProduceGroup.add(ProduceYes);
+		ProduceGroup.add(ProduceNo);
+		
+		//Radio Buttons for Perishable
+		PerishableYes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProduceYes.setEnabled(true);
+				ProduceNo.setEnabled(true);
+			}
+		});
+		
+		PerishableYes.setBounds(141, 30, 54, 23);
+		PerishableYes.setActionCommand("Yes");
+		contentPane.add(PerishableYes);
+		
+		//Disabling User from Clicking Yes or No for Produce
+		PerishableNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProduceGroup.clearSelection();
+				ProduceYes.setEnabled(false);
+				ProduceNo.setEnabled(false);
+			}
+		});
+		
+		PerishableNo.setBounds(207, 30, 50, 23);
+		PerishableNo.setActionCommand("No");
+		contentPane.add(PerishableNo);
+		
+
+		
+		// Radio Buttons for Produce
+
+		ProduceYes.setBounds(330, 30, 54, 23);
+		ProduceYes.setActionCommand("Yes");
+		contentPane.add(ProduceYes);
+		
+
+		ProduceNo.setBounds(390, 30, 54, 23);
+		ProduceNo.setActionCommand("No");
+		contentPane.add(ProduceNo);
+		
+
 		
 		JLabel lblNewLabel_1 = new JLabel("Expiry Date:");
 		lblNewLabel_1.setBounds(63, 62, 87, 16);
@@ -62,38 +104,24 @@ public class CreateGrocery extends JFrame {
 		lblNewLabel_2.setBounds(6, 90, 144, 16);
 		contentPane.add(lblNewLabel_2);
 		
-		textField = new JTextField();
-		textField.setBounds(141, 57, 116, 26);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		ExpiryDateTextField = new JTextField();
+		ExpiryDateTextField.setBounds(141, 57, 116, 26);
+		contentPane.add(ExpiryDateTextField);
+		ExpiryDateTextField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(141, 85, 116, 26);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		StorageTemperatureTextField = new JTextField();
+		StorageTemperatureTextField.setBounds(141, 85, 116, 26);
+		contentPane.add(StorageTemperatureTextField);
+		StorageTemperatureTextField.setColumns(10);
 		
 		JLabel lblNewLabel_3 = new JLabel("Produce?");
 		lblNewLabel_3.setBounds(269, 34, 61, 16);
 		contentPane.add(lblNewLabel_3);
 		
-		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Yes");
-		rdbtnNewRadioButton_2.setBounds(330, 30, 54, 23);
-		rdbtnNewRadioButton_2.setActionCommand("Yes");
-		contentPane.add(rdbtnNewRadioButton_2);
-		
-		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("No");
-		rdbtnNewRadioButton_3.setBounds(390, 30, 54, 23);
-		rdbtnNewRadioButton_3.setActionCommand("No");
-		contentPane.add(rdbtnNewRadioButton_3);
-		
-		ButtonGroup produceGroup = new ButtonGroup();
-		produceGroup.add(rdbtnNewRadioButton_2);
-		produceGroup.add(rdbtnNewRadioButton_3);
-		
-		textField_2 = new JTextField();
-		textField_2.setBounds(319, 57, 125, 26);
-		contentPane.add(textField_2);
-		textField_2.setColumns(10);
+		SeasonTextField = new JTextField();
+		SeasonTextField.setBounds(319, 57, 125, 26);
+		contentPane.add(SeasonTextField);
+		SeasonTextField.setColumns(10);
 		
 		JLabel lblNewLabel_4 = new JLabel("Season:");
 		lblNewLabel_4.setBounds(269, 62, 50, 16);
@@ -111,20 +139,20 @@ public class CreateGrocery extends JFrame {
 		lblNewLabel_7.setBounds(296, 128, 34, 16);
 		contentPane.add(lblNewLabel_7);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(98, 123, 69, 26);
-		contentPane.add(textField_3);
-		textField_3.setColumns(10);
+		TypeTextField = new JTextField();
+		TypeTextField.setBounds(98, 123, 69, 26);
+		contentPane.add(TypeTextField);
+		TypeTextField.setColumns(10);
 		
-		textField_4 = new JTextField();
-		textField_4.setBounds(218, 123, 78, 26);
-		contentPane.add(textField_4);
-		textField_4.setColumns(10);
+		WeightTextField = new JTextField();
+		WeightTextField.setBounds(218, 123, 78, 26);
+		contentPane.add(WeightTextField);
+		WeightTextField.setColumns(10);
 		
-		textField_5 = new JTextField();
-		textField_5.setBounds(330, 123, 78, 26);
-		contentPane.add(textField_5);
-		textField_5.setColumns(10);
+		PriceTextField = new JTextField();
+		PriceTextField.setBounds(330, 123, 78, 26);
+		contentPane.add(PriceTextField);
+		PriceTextField.setColumns(10);
 		
 		JLabel lblNewLabel_8 = new JLabel("Height:");
 		lblNewLabel_8.setBounds(43, 190, 61, 16);
@@ -138,20 +166,20 @@ public class CreateGrocery extends JFrame {
 		lblNewLabel_10.setBounds(286, 190, 61, 16);
 		contentPane.add(lblNewLabel_10);
 		
-		textField_6 = new JTextField();
-		textField_6.setBounds(89, 185, 78, 26);
-		contentPane.add(textField_6);
-		textField_6.setColumns(10);
+		HeightTextField = new JTextField();
+		HeightTextField.setBounds(89, 185, 78, 26);
+		contentPane.add(HeightTextField);
+		HeightTextField.setColumns(10);
 		
-		textField_7 = new JTextField();
-		textField_7.setBounds(207, 185, 78, 26);
-		contentPane.add(textField_7);
-		textField_7.setColumns(10);
+		WidthTextField = new JTextField();
+		WidthTextField.setBounds(207, 185, 78, 26);
+		contentPane.add(WidthTextField);
+		WidthTextField.setColumns(10);
 		
-		textField_8 = new JTextField();
-		textField_8.setBounds(330, 185, 78, 26);
-		contentPane.add(textField_8);
-		textField_8.setColumns(10);
+		LengthTextField = new JTextField();
+		LengthTextField.setBounds(330, 185, 78, 26);
+		contentPane.add(LengthTextField);
+		LengthTextField.setColumns(10);
 		
 		JLabel lblNewLabel_11 = new JLabel("Dimensions");
 		lblNewLabel_11.setBounds(178, 162, 89, 16);
@@ -161,17 +189,22 @@ public class CreateGrocery extends JFrame {
 		btnNewButton.setBounds(168, 243, 117, 29);
 		contentPane.add(btnNewButton);
 		
+		
+		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GroceryInstanceInfo g = new GroceryInstanceInfo();
-				if (perishableGroup.getSelection().getActionCommand().equals("Yes")) {
-					System.out.println("this work?");
+				if (PerishableGroup.getSelection().getActionCommand().equals("Yes")) {
+					ProduceNo.setEnabled(true);
+					ProduceYes.setEnabled(true);	
 				}
 				else {
 					g.isPerishable = false;
-					System.out.println("hello?");
+					ProduceNo.setEnabled(false);
+					ProduceYes.setEnabled(false);
 				}
-				if (produceGroup.getSelection().getActionCommand().equals("Yes")) {
+				
+				if (ProduceGroup.getSelection().getActionCommand().equals("Yes")) {
 					g.isProduce = true;
 					System.out.println("this a produce?");
 				}
