@@ -7,7 +7,7 @@
  * take care of the variables usernamestring and passwordstring to use 
  * appropriate database credentials before you compile !
  *
-**/
+ **/
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -67,10 +67,10 @@ class BudgetUpdateInfo {
 
 class simpleJDBC {
 	public SQLInfo info;
-	
+
 	// singleton
 	private static simpleJDBC INSTANCE = null;
-	
+
 	private simpleJDBC() throws SQLException {
 		int sqlCode = 0; // Variable to hold SQLCODE
 		String sqlState = "00000"; // Variable to hold SQLSTATE
@@ -93,14 +93,13 @@ class simpleJDBC {
 
 		System.out.println("JDBC User Constructor Succeeded & Finished");
 	}
-	
-	public static simpleJDBC getInstance() throws SQLException 
-    { 
-        if (INSTANCE == null) 
-        	INSTANCE = new simpleJDBC(); 
-  
-        return INSTANCE; 
-    } 
+
+	public static simpleJDBC getInstance() throws SQLException {
+		if (INSTANCE == null)
+			INSTANCE = new simpleJDBC();
+
+		return INSTANCE;
+	}
 
 	public void Close() throws SQLException {
 		// Need to call this whenever the application is closed!
@@ -139,7 +138,7 @@ class simpleJDBC {
 		return null;
 	}
 
-	public int CreateGrocery(GroceryInstanceInfo grocery) {
+	public int CreateGrocery(GroceryInstanceInfo grocery) throws IllegalArgumentException {
 		int groceryBarcode = -1;
 
 		// Get the grocery barcode
@@ -219,6 +218,27 @@ class simpleJDBC {
 				info.sqlCode = e.getErrorCode(); // Get SQLCODE
 				info.sqlState = e.getSQLState(); // Get SQLSTATE
 				System.out.println("Error creating new Non-perishable");
+				System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+			}
+		}
+
+		// Update the used budgets
+		// If it fails to update the used budget, it deletes the grocery it just added
+		// It will throw an IllegalArgumentException if this occurs.
+		try {
+			System.out.println("Updating budget...");
+			UpdateUsedBudgets();
+			System.out.println("Updated budget");
+		} catch (SQLException e) {
+			System.out.println("Could not update budget, deleting grocery...");
+			try {
+				DeleteGrocery(groceryBarcode);
+				System.out.println("Error with updating budgets- did not create grocery.");
+				throw new IllegalArgumentException("Restaurant does not have enough budget for this grocery.");
+			} catch (SQLException e1) {
+				info.sqlCode = e.getErrorCode(); // Get SQLCODE
+				info.sqlState = e.getSQLState(); // Get SQLSTATE
+				System.out.println("Error deleting new grocery " + groceryBarcode);
 				System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 			}
 		}
@@ -337,7 +357,7 @@ class simpleJDBC {
 			ResultSet rs = info.statement.executeQuery(countSQL);
 			rs.next();
 			numRows = rs.getInt(1);
-			
+
 			String querySQL = "SELECT * FROM ingredients_info" + " WHERE shipname=\'" + restaurant.shipname
 					+ "\' AND restaurant_name=\'" + restaurant.restaurantName + "\';";
 			System.out.println(querySQL);
@@ -349,20 +369,20 @@ class simpleJDBC {
 			String[][] table = new String[numRows + 1][numCols];
 			int i = 0;
 			for (int j = 0; j < numCols; ++j) {
-				table[i][j] = rsmd.getColumnName(j+1);
+				table[i][j] = rsmd.getColumnName(j + 1);
 			}
 
 			i++;
 			while (rs.next()) {
 				for (int j = 0; j < numCols; ++j) {
-					Object colResult = rs.getObject(j+1);
+					Object colResult = rs.getObject(j + 1);
 					table[i][j] = String.valueOf(colResult);
 				}
 				i++;
 			}
-			
+
 			return table;
-			
+
 		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
@@ -381,7 +401,7 @@ class simpleJDBC {
 			rs.next();
 			numRows = rs.getInt(1);
 			System.out.println(countSQL);
-			
+
 			String querySQL = "SELECT roomnumber, restaurantname, capacity, restaurantbudget, usedBudget"
 					+ " FROM restaurant" + " WHERE shipname=\'" + shipName + "\';";
 			System.out.println(querySQL);
@@ -393,85 +413,125 @@ class simpleJDBC {
 			String[][] table = new String[numRows + 1][numCols];
 			int i = 0;
 			for (int j = 0; j < numCols; ++j) {
-				table[i][j] = rsmd.getColumnName(j+1);
+				table[i][j] = rsmd.getColumnName(j + 1);
 			}
 
 			i++;
 			while (rs.next()) {
 				for (int j = 0; j < numCols; ++j) {
-					Object colResult = rs.getObject(j+1);
+					Object colResult = rs.getObject(j + 1);
 					table[i][j] = String.valueOf(colResult);
 				}
 				i++;
 			}
-			
+
 			return table;
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error getting restaurant budget info");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 		}
-		
+
 		return null;
 	}
-	
+
 	public ArrayList<String> GetShipNames() {
 		try {
 			String querySQL = "SELECT shipname FROM ship;";
 			System.out.println(querySQL);
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched all ships");
-			
+
 			ArrayList<String> list = new ArrayList<String>();
-			while(rs.next()) {
+			while (rs.next()) {
 				list.add(rs.getString(1));
 			}
-			
+
 			return list;
-			
-		} catch(SQLException e) {
+
+		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error getting all ships");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 		}
-		
+
 		return null;
 	}
-	
+
 	public ArrayList<String> GetRestaurants(String shipName) {
 		try {
-			String querySQL = "SELECT roomnumber, restaurantname FROM restaurant"
-					+ " WHERE shipname=\'" + shipName + "\';";
+			String querySQL = "SELECT roomnumber, restaurantname FROM restaurant" + " WHERE shipname=\'" + shipName
+					+ "\';";
 			System.out.println(querySQL);
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched all restauraunts from ship " + shipName);
-			
+
 			ArrayList<String> list = new ArrayList<String>();
-			while(rs.next()) {
+			while (rs.next()) {
 				String row = rs.getString(2) + " (" + rs.getInt(1) + ")";
 				list.add(row);
 			}
-			
+
 			return list;
-			
-		} catch(SQLException e) {
+
+		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error getting restaurants in ship " + shipName);
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 		}
-		
+
 		return null;
 	}
-	
-	public String[][] AutoAdjustBudgets(){
-		
-		
-		return null;
+
+	public void UpdateUsedBudgets() throws SQLException {
+		try {
+			String querySQL = "SELECT update_usedBudgets();";
+			System.out.println(querySQL);
+			ResultSet rs = info.statement.executeQuery(querySQL);
+			System.out.println("Updated used budgets successfully");
+		} catch (SQLException e) {
+			info.sqlCode = e.getErrorCode(); // Get SQLCODE
+			info.sqlState = e.getSQLState(); // Get SQLSTATE
+			System.out.println("Error updating used budgets!");
+			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+
+			throw new SQLException("Budget Update failed");
+		}
 	}
-	
+
+	public void DeleteGrocery(int barcode) throws SQLException {
+		System.out.println(barcode);
+		String delSQL = "DELETE FROM produce WHERE grocerybarcode=" + barcode + ";";
+		info.statement.executeUpdate(delSQL);
+		System.out.println(delSQL);
+
+		delSQL = "DELETE FROM perishables WHERE grocerybarcode=" + barcode + ";";
+		info.statement.executeUpdate(delSQL);
+		System.out.println(delSQL);
+
+		delSQL = "DELETE FROM nonperishables WHERE grocerybarcode=" + barcode + ";";
+		info.statement.executeUpdate(delSQL);
+		System.out.println(delSQL);
+
+		delSQL = "DELETE FROM grocery WHERE grocerybarcode=" + barcode + ";";
+		info.statement.executeUpdate(delSQL);
+		System.out.println(delSQL);
+	}
+
+	public void DeleteIngredient(int orderid) throws SQLException {
+		System.out.println(orderid);
+		String delSQL = "DELETE FROM restaurant_orders WHERE orderid=" + orderid + ";";
+		info.statement.executeUpdate(delSQL);
+		System.out.println(delSQL);
+
+		delSQL = "DELETE FROM ingredients WHERE orderid=" + orderid + ";";
+		info.statement.executeUpdate(delSQL);
+		System.out.println(delSQL);
+	}
+
 	public void DeleteTestVals() {
 		try {
 			System.out.println("\nDeleting test values...");
@@ -486,22 +546,7 @@ class simpleJDBC {
 			// Delete all test groceries from
 			while (toDelete.next()) {
 				int barcode = toDelete.getInt(1);
-				System.out.println(barcode);
-				String delSQL = "DELETE FROM produce WHERE grocerybarcode=" + barcode + ";";
-				info.statement.executeUpdate(delSQL);
-				System.out.println(delSQL);
-
-				delSQL = "DELETE FROM perishables WHERE grocerybarcode=" + barcode + ";";
-				info.statement.executeUpdate(delSQL);
-				System.out.println(delSQL);
-
-				delSQL = "DELETE FROM nonperishables WHERE grocerybarcode=" + barcode + ";";
-				info.statement.executeUpdate(delSQL);
-				System.out.println(delSQL);
-
-				delSQL = "DELETE FROM grocery WHERE grocerybarcode=" + barcode + ";";
-				info.statement.executeUpdate(delSQL);
-				System.out.println(delSQL);
+				DeleteGrocery(barcode);
 			}
 
 			stmt2.close();
@@ -515,18 +560,11 @@ class simpleJDBC {
 			// Delete all test groceries from
 			while (toDelete.next()) {
 				int orderid = toDelete.getInt(1);
-				System.out.println(orderid);
-				String delSQL = "DELETE FROM restaurant_orders WHERE orderid=" + orderid + ";";
-				info.statement.executeUpdate(delSQL);
-				System.out.println(delSQL);
-
-				delSQL = "DELETE FROM ingredients WHERE orderid=" + orderid + ";";
-				info.statement.executeUpdate(delSQL);
-				System.out.println(delSQL);
+				DeleteIngredient(orderid);
 			}
 
 			stmt3.close();
-			
+
 			System.out.println("Successfully deleted all test values");
 
 		} catch (SQLException e) {
@@ -540,11 +578,15 @@ class simpleJDBC {
 	public static void main(String[] args) {
 		try {
 			simpleJDBC user = new simpleJDBC();
-			
-//			TestCases(user);
-//			TestFunction(user);
-			user.DeleteTestVals();
-			
+
+			try {
+// 				TestCases(user);
+//				TestFunction(user);
+				user.DeleteTestVals();
+			} catch (IllegalArgumentException e) {
+				System.out.println("Error occurred.");
+			}
+
 			user.Close();
 
 		} catch (SQLException e) {
@@ -552,7 +594,7 @@ class simpleJDBC {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void TestFunction(simpleJDBC user) {
 		// Creating test ingredient
 		IngredientInfo ing1 = new IngredientInfo();
@@ -571,7 +613,7 @@ class simpleJDBC {
 		gro1.orderID = String.valueOf(id);
 		user.CreateGrocery(gro1);
 	}
-	
+
 	public static void TestCases(simpleJDBC user) {
 		// Creating test ingredient
 		IngredientInfo ing1 = new IngredientInfo();
@@ -633,27 +675,27 @@ class simpleJDBC {
 		ArrayList<String> shipNames = user.GetShipNames();
 		System.out.println("\nAll ship names:");
 		System.out.println(Arrays.toString(shipNames.toArray()));
-		
+
 		ArrayList<String> restaurantNames = user.GetRestaurants(shipNames.get(0));
 		System.out.println("\nAll restauraunts from " + shipNames.get(0));
 		System.out.println(Arrays.toString(restaurantNames.toArray()));
-		
+
 		String[][] budgetInfo = user.GetBudgetInfo(shipNames.get(0));
 		System.out.println("\nBudget info for Ship " + shipNames.get(0));
-		for(int i = 0; i < budgetInfo.length; ++i) {
-			for(int j = 0; j < budgetInfo[0].length; ++j) {
+		for (int i = 0; i < budgetInfo.length; ++i) {
+			for (int j = 0; j < budgetInfo[0].length; ++j) {
 				System.out.print(budgetInfo[i][j]);
 			}
 			System.out.println();
 		}
-		
+
 		RestaurantInfo r1 = new RestaurantInfo();
 		r1.shipname = "Titanic";
 		r1.restaurantName = "Pizza Pizza";
 		String[][] restaurantOrders = user.GetRestaurantOrders(r1);
 		System.out.println("\nOrders for " + r1.shipname + ", " + r1.restaurantName);
-		for(int i = 0; i < restaurantOrders.length; ++i) {
-			for(int j = 0; j < restaurantOrders[0].length; ++j) {
+		for (int i = 0; i < restaurantOrders.length; ++i) {
+			for (int j = 0; j < restaurantOrders[0].length; ++j) {
 				System.out.print(restaurantOrders[i][j]);
 			}
 			System.out.println();
