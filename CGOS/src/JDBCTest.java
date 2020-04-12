@@ -133,12 +133,12 @@ class simpleJDBC {
 			// something more meaningful than a print would be good
 			System.out.println("Error in ExecuteQuery");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+			
+			throw new SQLException();
 		}
-
-		return null;
 	}
 
-	public int CreateGrocery(GroceryInstanceInfo grocery) throws IllegalArgumentException {
+	public int CreateGrocery(GroceryInstanceInfo grocery) throws IllegalArgumentException, SQLException {
 		int groceryBarcode = -1;
 
 		// Get the grocery barcode
@@ -156,7 +156,7 @@ class simpleJDBC {
 			System.out.println("Error fetching max barcode");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 			System.out.println("Could not create new grocery");
-			return -1;
+			throw new SQLException();
 		}
 
 		// Insert the grocery
@@ -172,6 +172,7 @@ class simpleJDBC {
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error creating new Grocery");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+			throw new SQLException();
 		}
 
 		// Insert perishable/non-perishable:
@@ -189,6 +190,7 @@ class simpleJDBC {
 				info.sqlState = e.getSQLState(); // Get SQLSTATE
 				System.out.println("Error creating new Perishable");
 				System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+				throw new SQLException();
 			}
 
 			// Is perishable & produce
@@ -204,6 +206,7 @@ class simpleJDBC {
 					info.sqlState = e.getSQLState(); // Get SQLSTATE
 					System.out.println("Error creating new Produce");
 					System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+					throw new SQLException();
 				}
 			}
 		}
@@ -219,6 +222,7 @@ class simpleJDBC {
 				info.sqlState = e.getSQLState(); // Get SQLSTATE
 				System.out.println("Error creating new Non-perishable");
 				System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+				throw new SQLException();
 			}
 		}
 
@@ -240,13 +244,15 @@ class simpleJDBC {
 				info.sqlState = e.getSQLState(); // Get SQLSTATE
 				System.out.println("Error deleting new grocery " + groceryBarcode);
 				System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+				
+				throw new SQLException();
 			}
 		}
 
 		return groceryBarcode;
 	}
 
-	public int CreateIngredient(IngredientInfo ingredient) {
+	public int CreateIngredient(IngredientInfo ingredient) throws SQLException {
 		int orderID = -1;
 
 		// Get the grocery barcode
@@ -265,7 +271,7 @@ class simpleJDBC {
 			System.out.println("Error fetching max orderID");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 			System.out.println("Could not create ingredient");
-			return -1;
+			throw new SQLException();
 		}
 
 		// Insert the ingredient
@@ -280,6 +286,7 @@ class simpleJDBC {
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error creating new Ingredient");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+			throw new SQLException();
 		}
 
 		// Insert the ingredient
@@ -295,12 +302,13 @@ class simpleJDBC {
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error adding order to restaurant");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+			throw new SQLException();
 		}
 
 		return orderID;
 	}
 
-	public void UpdateBudget(BudgetUpdateInfo budgetInfo) {
+	public void UpdateBudget(BudgetUpdateInfo budgetInfo) throws SQLException {
 		try {
 			String updateSQL = "UPDATE restaurant SET restaurantbudget=" + budgetInfo.newBudget + " WHERE shipname=\'"
 					+ budgetInfo.shipname + "\' AND roomnumber=" + budgetInfo.roomNo + ";";
@@ -313,10 +321,11 @@ class simpleJDBC {
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error updating budget");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+			throw new SQLException();
 		}
 	}
 
-	public void UpdateIngredient(IngredientUpdateInfo ingInfo) {
+	public void UpdateIngredient(IngredientUpdateInfo ingInfo) throws SQLException {
 		try {
 			if (ingInfo.type != null) {
 				String updateSQL = "UPDATE ingredients " + "SET ingredienttype=\'" + ingInfo.type + "\'"
@@ -345,11 +354,13 @@ class simpleJDBC {
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error updating ingredient");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+		
+			throw new SQLException();
 		}
 	}
 
 	// This function needs restaurant.shipName and restaurant.restaurantName
-	public ArrayList<String[]> GetRestaurantOrders(RestaurantInfo restaurant) {
+	public ArrayList<String[]> GetRestaurantOrders(RestaurantInfo restaurant) throws SQLException {
 		try {
 			String querySQL = "SELECT * FROM orders_info" + " WHERE shipname=\'" + restaurant.shipname
 					+ "\' AND restaurant_name=\'" + restaurant.restaurantName + "\';";
@@ -364,12 +375,12 @@ class simpleJDBC {
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error getting ingredients info");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+			
+			throw new SQLException();
 		}
-
-		return null;
 	}
 
-	public ArrayList<String[]> GetBudgetInfo(String shipName) {
+	public ArrayList<String[]> GetBudgetInfo(String shipName) throws SQLException {
 		try {
 			String querySQL = "SELECT roomnumber, restaurantname, capacity, restaurantbudget, usedBudget"
 					+ " FROM restaurant" + " WHERE shipname=\'" + shipName + "\';";
@@ -384,9 +395,8 @@ class simpleJDBC {
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error getting restaurant budget info");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+			throw new SQLException();
 		}
-
-		return null;
 	}
 
 	public ArrayList<String> GetShipNames() {
@@ -434,7 +444,7 @@ class simpleJDBC {
 		return null;
 	}
 
-	public ArrayList<String> GetListOfDietaryRestrictions(String shipName){
+	public ArrayList<String> GetListOfDietaryRestrictions(String shipName) throws SQLException{
 		try {
 			String querySQL = "SELECT * FROM dietaryrestriction "
 					+ " WHERE restrictiontype IN" 
@@ -453,12 +463,11 @@ class simpleJDBC {
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error getting restaurant budget info");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+			throw new SQLException();
 		}
-
-		return null;
 	}
 	
-	public ArrayList<String[]> GetPassengersWithDietaryRestriction(String restrictionType) {
+	public ArrayList<String[]> GetPassengersWithDietaryRestriction(String restrictionType) throws SQLException {
 		try {
 			String querySQL = "SELECT * FROM passenger" + " WHERE passengerid IN"
 					+ " (SELECT passengerid FROM has_restriction_type" + " WHERE restrictiontype=\'" + restrictionType
@@ -473,9 +482,8 @@ class simpleJDBC {
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error getting passengers with dietary restriction " + restrictionType);
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+			throw new SQLException();
 		}
-
-		return null;
 	}
 
 	public ArrayList<String[]> Get2DArrayListFromResultSet(ResultSet rs) throws SQLException {
@@ -523,7 +531,6 @@ class simpleJDBC {
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
 			System.out.println("Error updating used budgets!");
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
-
 			throw new SQLException("Budget Update failed");
 		}
 	}
@@ -612,6 +619,8 @@ class simpleJDBC {
 				user.DeleteTestVals();
 			} catch (IllegalArgumentException e) {
 				System.out.println("Error occurred.");
+			} catch (SQLException e) {
+				System.out.println("SQL Error occured.");
 			}
 
 			user.Close();
@@ -622,7 +631,7 @@ class simpleJDBC {
 		}
 	}
 
-	public static void TestFunction(simpleJDBC user) {
+	public static void TestFunction(simpleJDBC user) throws SQLException {
 		// Creating test ingredient
 		IngredientInfo ing1 = new IngredientInfo();
 		ing1.shipName = "Titanic";
@@ -641,7 +650,7 @@ class simpleJDBC {
 		user.CreateGrocery(gro1);
 	}
 
-	public static void TestCases(simpleJDBC user) {
+	public static void TestCases(simpleJDBC user) throws SQLException {
 		// Creating test ingredient
 		IngredientInfo ing1 = new IngredientInfo();
 		ing1.shipName = "Titanic";
