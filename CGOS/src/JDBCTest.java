@@ -351,17 +351,10 @@ class simpleJDBC {
 	// This function needs restaurant.shipName and restaurant.restaurantName
 	public ArrayList<String[]> GetRestaurantOrders(RestaurantInfo restaurant) {
 		try {
-			int numRows = -1;
-			String countSQL = "SELECT COUNT(*) FROM ingredients_info" + " WHERE shipname=\'" + restaurant.shipname
-					+ "\' AND restaurant_name=\'" + restaurant.restaurantName + "\';";
-			ResultSet rs = info.statement.executeQuery(countSQL);
-			rs.next();
-			numRows = rs.getInt(1);
-
 			String querySQL = "SELECT * FROM ingredients_info" + " WHERE shipname=\'" + restaurant.shipname
 					+ "\' AND restaurant_name=\'" + restaurant.restaurantName + "\';";
 			System.out.println(querySQL);
-			rs = info.statement.executeQuery(querySQL);
+			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched ingredients for " + restaurant.shipname + ", " + restaurant.restaurantName);
 			
 			return GetArrayListFromResultSet(rs);
@@ -378,17 +371,10 @@ class simpleJDBC {
 
 	public ArrayList<String[]> GetBudgetInfo(String shipName) {
 		try {
-			int numRows = -1;
-			String countSQL = "SELECT COUNT(*) FROM restaurant WHERE shipname=\'" + shipName + "\';";
-			ResultSet rs = info.statement.executeQuery(countSQL);
-			rs.next();
-			numRows = rs.getInt(1);
-			System.out.println(countSQL);
-
 			String querySQL = "SELECT roomnumber, restaurantname, capacity, restaurantbudget, usedBudget"
 					+ " FROM restaurant" + " WHERE shipname=\'" + shipName + "\';";
 			System.out.println(querySQL);
-			rs = info.statement.executeQuery(querySQL);
+			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched budgets for " + shipName);
 			
 			return GetArrayListFromResultSet(rs);
