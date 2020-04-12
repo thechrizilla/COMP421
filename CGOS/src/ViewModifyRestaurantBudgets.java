@@ -93,7 +93,7 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 					
 					ArrayList<String> toDisplay = new ArrayList<String>();
 					for (int i = 1; i < budgetInfos.size(); ++i) {
-						String row = budgetInfos.get(i)[1] + " (" + budgetInfos.get(i)[0] + ") - $" + budgetInfos.get(i)[4] + "/" + budgetInfos.get(i)[3];
+						String row = budgetInfos.get(i)[1] + " (" + budgetInfos.get(i)[0] + ") - $" + budgetInfos.get(i)[4] + " / " + budgetInfos.get(i)[3];
 						toDisplay.add(row);
 					}
 					
