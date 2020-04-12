@@ -683,7 +683,7 @@ class simpleJDBC {
 		System.out.println("\nBudget info for Ship " + shipNames.get(0));
 		for (int i = 0; i < budgetInfo.size(); ++i) {
 			for (int j = 0; j < budgetInfo.get(0).length; ++j) {
-				System.out.print(budgetInfo.get(i)[j] + " ");
+				System.out.print(budgetInfo.get(i)[j] + "\t");
 			}
 			System.out.println();
 		}
@@ -695,7 +695,7 @@ class simpleJDBC {
 		System.out.println("\nOrders for " + r1.shipname + ", " + r1.restaurantName);
 		for (int i = 0; i < restaurantOrders.size(); ++i) {
 			for (int j = 0; j < restaurantOrders.get(0).length; ++j) {
-				System.out.print(restaurantOrders.get(i)[j] + " ");
+				System.out.print(restaurantOrders.get(i)[j] + "\t");
 			}
 			System.out.println();
 		}
