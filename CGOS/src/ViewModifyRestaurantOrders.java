@@ -31,7 +31,7 @@ public class ViewModifyRestaurantOrders extends JFrame {
 	private String shipName;
 	private ArrayList<String[]> orderInfos;
 	
-	public ViewModifyRestaurantOrders() {
+	public ViewModifyRestaurantOrders() throws SQLException {
 		this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent evt){
                 int x = JOptionPane.showConfirmDialog(null, 
@@ -61,7 +61,7 @@ public class ViewModifyRestaurantOrders extends JFrame {
 		ShipNameLabel.setBounds(265, 38, 71, 16);
 		contentPane.add(ShipNameLabel);
 		
-		JComboBox ShipNameComboBox = new JComboBox();
+		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
 		ShipNameComboBox.setBounds(334, 34, 170, 27);
 		contentPane.add(ShipNameComboBox);
 		
@@ -87,6 +87,7 @@ public class ViewModifyRestaurantOrders extends JFrame {
 		JButton modifyOrderBtn = new JButton("Modify Order");
 		modifyOrderBtn.setBounds(371, 367, 117, 29);
 		contentPane.add(modifyOrderBtn);
+		
 		modifyOrderBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = list_orders.getSelectedIndex();
@@ -105,42 +106,31 @@ public class ViewModifyRestaurantOrders extends JFrame {
 			}
 		});
 		
-		ShipNameComboBox.addPopupMenuListener(new PopupMenuListener() {
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				ShipNameComboBox.removeAllItems();
-
-				try {
-					for (Object item : simpleJDBC.getInstance().GetShipNames()) {
-						ShipNameComboBox.addItem(item);
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-
-			public void popupMenuCanceled(PopupMenuEvent e) {
-			}
-
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-			}
-		});
+		RestaurantComboBox.setEnabled(false);
+		RestaurantLabel.setEnabled(false);
+		
+		ShipNameComboBox.setSelectedIndex(-1);
 
 		ShipNameComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					RestaurantComboBox.setEnabled(false);
+					RestaurantLabel.setEnabled(false);
 					Object o = ShipNameComboBox.getSelectedItem();
 					if (o == null)
 						return;
-					
+
 					shipName = o.toString();
 					ArrayList<String> restaurants = simpleJDBC.getInstance().GetRestaurants(shipName);
 					RestaurantComboBox.removeAllItems();
 					for (String r : restaurants) {
-						RestaurantComboBox.addItem(r);
+						RestaurantComboBox.insertItemAt(r, 0);
 					}
 					RestaurantComboBox.setEnabled(true);
-//					restaurantNameLabel.setEnabled(true);
+					RestaurantLabel.setEnabled(true);
+					RestaurantComboBox.setSelectedIndex(-1);
+					model.clear();
+
 
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

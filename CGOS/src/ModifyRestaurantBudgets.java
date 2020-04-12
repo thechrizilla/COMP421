@@ -79,8 +79,14 @@ public class ModifyRestaurantBudgets extends JFrame {
 		JButton BackButton = new JButton("Back");
 		BackButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ViewModifyRestaurantBudgets VMRB = new ViewModifyRestaurantBudgets();
-				VMRB.setVisible(true);
+				ViewModifyRestaurantBudgets VMRB;
+				try {
+					VMRB = new ViewModifyRestaurantBudgets();
+					VMRB.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dispose();
 			}
 		});

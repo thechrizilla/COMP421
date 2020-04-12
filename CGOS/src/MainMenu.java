@@ -99,8 +99,14 @@ public class MainMenu extends JFrame {
 		JButton ViewModifyBudgets = new JButton("View/Modify Restaurant Budgets");
 		ViewModifyBudgets.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ViewModifyRestaurantBudgets VMRB = new ViewModifyRestaurantBudgets();
-				VMRB.setVisible(true);
+				ViewModifyRestaurantBudgets VMRB;
+				try {
+					VMRB = new ViewModifyRestaurantBudgets();
+					VMRB.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dispose();
 			}
 		});
@@ -110,8 +116,14 @@ public class MainMenu extends JFrame {
 		JButton AutoAdjustBudgets = new JButton("View/Modify Restaurant Orders");
 		AutoAdjustBudgets.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ViewModifyRestaurantOrders VMRO = new ViewModifyRestaurantOrders();
-				VMRO.setVisible(true);
+				ViewModifyRestaurantOrders VMRO;
+				try {
+					VMRO = new ViewModifyRestaurantOrders();
+					VMRO.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dispose();
 			}
 		});

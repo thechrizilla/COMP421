@@ -21,7 +21,7 @@ import java.awt.event.ActionEvent;
 public class CreateGroceryConfirm extends JFrame {
 
 	private JPanel contentPane;
-	 */
+	 
 	public CreateGroceryConfirm(GroceryInstanceInfo g) throws SQLException {
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
@@ -56,7 +56,7 @@ public class CreateGroceryConfirm extends JFrame {
 		lblNewLabel.setBounds(292, 154, 71, 16);
 		contentPane.add(lblNewLabel);
 
-		JComboBox ShipNameComboBox = new JComboBox();
+		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
 		ShipNameComboBox.setBounds(361, 150, 175, 27);
 		contentPane.add(ShipNameComboBox);
 
@@ -91,27 +91,7 @@ public class CreateGroceryConfirm extends JFrame {
 		BackButton.setBounds(45, 414, 117, 29);
 		contentPane.add(BackButton);
 
-		ShipNameComboBox.addPopupMenuListener(new PopupMenuListener() {
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				ShipNameComboBox.removeAllItems();
-
-				try {
-					for (Object item : simpleJDBC.getInstance().GetShipNames()) {
-						ShipNameComboBox.addItem(item);
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-
-			public void popupMenuCanceled(PopupMenuEvent e) {
-			}
-
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-			}
-		});
-
+		ShipNameComboBox.setSelectedIndex(-1);
 		ShipNameComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {

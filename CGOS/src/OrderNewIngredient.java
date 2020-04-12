@@ -69,7 +69,7 @@ public class OrderNewIngredient extends JFrame {
 		lblNewLabel_3.setBounds(281, 188, 47, 16);
 		contentPane.add(lblNewLabel_3);
 		
-		JComboBox ShipNameComboBox = new JComboBox();
+		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
 		ShipNameComboBox.setBounds(327, 62, 163, 27);
 		contentPane.add(ShipNameComboBox);
 
@@ -79,26 +79,7 @@ public class OrderNewIngredient extends JFrame {
 		RestaurantComboBox.setEnabled(false);
 		restaurantNameLabel.setEnabled(false);
 		
-		ShipNameComboBox.addPopupMenuListener(new PopupMenuListener()
-		{
-		    public void popupMenuWillBecomeVisible(PopupMenuEvent e)
-		    {
-		    	 ShipNameComboBox.removeAllItems();
-
-				try {
-					for (Object item : simpleJDBC.getInstance().GetShipNames()) {
-						ShipNameComboBox.addItem(item);
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		    }
-
-		    public void popupMenuCanceled(PopupMenuEvent e) {}
-		    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
-		});
-		
+		ShipNameComboBox.setSelectedIndex(-1);
 		ShipNameComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {

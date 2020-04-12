@@ -32,7 +32,7 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 	private ArrayList<String[]> budgetInfos;
 	private String selectedShip;
 
-	public ViewModifyRestaurantBudgets() {
+	public ViewModifyRestaurantBudgets() throws SQLException {
 		this.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent evt){
 				int x = JOptionPane.showConfirmDialog(null, 
@@ -77,35 +77,15 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 		list_restaurants.setLayoutOrientation(JList.VERTICAL);
 		list_restaurants.setVisibleRowCount(-1);
 
-		JComboBox ShipNameComboBox = new JComboBox();
+		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
 		ShipNameComboBox.setBounds(374, 25, 134, 27);
 		contentPane.add(ShipNameComboBox);
+		ShipNameComboBox.setSelectedIndex(-1);
 		
-		ShipNameComboBox.addPopupMenuListener(new PopupMenuListener()
-		{
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
-			{
-				ShipNameComboBox.removeAllItems();
-
-				try {
-					for (Object item : simpleJDBC.getInstance().GetShipNames()) {
-						ShipNameComboBox.addItem(item);
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-
-			public void popupMenuCanceled(PopupMenuEvent e) {}
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
-		});
-
 		ShipNameComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					model.clear();
-					
 					Object o = ShipNameComboBox.getSelectedItem();
 					if (o == null) return;
 					selectedShip = o.toString();

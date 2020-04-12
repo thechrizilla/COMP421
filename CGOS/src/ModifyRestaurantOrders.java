@@ -126,8 +126,14 @@ public class ModifyRestaurantOrders extends JFrame {
 		JButton Back = new JButton("Back");
 		Back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ViewModifyRestaurantOrders VMRO = new ViewModifyRestaurantOrders();
-				VMRO.setVisible(true);
+				ViewModifyRestaurantOrders VMRO;
+				try {
+					VMRO = new ViewModifyRestaurantOrders();
+					VMRO.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dispose();
 			}
 		});
