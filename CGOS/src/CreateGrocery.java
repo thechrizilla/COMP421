@@ -105,21 +105,21 @@ public class CreateGrocery extends JFrame {
 		
 
 		
-		JLabel expiryDateLabel = new JLabel("Expiry Date:");
-		expiryDateLabel.setBounds(63, 62, 87, 16);
+		JLabel expiryDateLabel = new JLabel("Expiry Date (YYYY-MM-DD):");
+		expiryDateLabel.setBounds(17, 62, 178, 16);
 		contentPane.add(expiryDateLabel);
 		
 		JLabel storageTempLabel = new JLabel("Storage Temperature:");
-		storageTempLabel.setBounds(6, 90, 144, 16);
+		storageTempLabel.setBounds(113, 90, 144, 16);
 		contentPane.add(storageTempLabel);
 		
 		ExpiryDateTextField = new JTextField();
-		ExpiryDateTextField.setBounds(141, 57, 116, 26);
+		ExpiryDateTextField.setBounds(198, 57, 97, 26);
 		contentPane.add(ExpiryDateTextField);
 		ExpiryDateTextField.setColumns(10);
 		
 		StorageTemperatureTextField = new JTextField();
-		StorageTemperatureTextField.setBounds(141, 85, 116, 26);
+		StorageTemperatureTextField.setBounds(248, 85, 109, 26);
 		contentPane.add(StorageTemperatureTextField);
 		StorageTemperatureTextField.setColumns(10);
 		
@@ -128,12 +128,12 @@ public class CreateGrocery extends JFrame {
 		contentPane.add(produceLabel);
 		
 		SeasonTextField = new JTextField();
-		SeasonTextField.setBounds(319, 57, 125, 26);
+		SeasonTextField.setBounds(356, 57, 109, 26);
 		contentPane.add(SeasonTextField);
 		SeasonTextField.setColumns(10);
 		
 		JLabel seasonLabel = new JLabel("Season:");
-		seasonLabel.setBounds(269, 62, 50, 16);
+		seasonLabel.setBounds(307, 62, 50, 16);
 		contentPane.add(seasonLabel);
 		
 		ProduceYes.addActionListener(new ActionListener() {
@@ -159,10 +159,13 @@ public class CreateGrocery extends JFrame {
 				produceLabel.setEnabled(false);
 				seasonLabel.setEnabled(false);
 				SeasonTextField.setEnabled(false);
+				SeasonTextField.setText("");
 				expiryDateLabel.setEnabled(false);
 				ExpiryDateTextField.setEnabled(false);
+				ExpiryDateTextField.setText("");
 				storageTempLabel.setEnabled(false);
 				StorageTemperatureTextField.setEnabled(false);
+				StorageTemperatureTextField.setText("");
 			}
 		});
 		
@@ -243,7 +246,21 @@ public class CreateGrocery extends JFrame {
 		contentPane.add(EnterButton);
 		
 		JButton BackButton = new JButton("Back");
-		BackButton.setBounds(6, 243, 117, 29);
+		BackButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainMenu MM;
+				try {
+					MM = new MainMenu();
+					MM.setVisible(true);
+					dispose();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		BackButton.setBounds(6, 272, 117, 29);
 		contentPane.add(BackButton);
 		
 		
@@ -251,6 +268,16 @@ public class CreateGrocery extends JFrame {
 		EnterButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GroceryInstanceInfo g = new GroceryInstanceInfo();
+				
+				if(PerishableGroup.getSelection() == null) {
+					JOptionPane.showMessageDialog(null, "Select \"Yes\" or \"No\" for Perishable");
+					return;
+				}
+				if(ProduceGroup.getSelection() == null && PerishableGroup.getSelection().getActionCommand().equals("Yes")) {
+					JOptionPane.showMessageDialog(null, "Select \"Yes\" or \"No\" for Produce");
+					return;
+				}
+
 							
 				if (PerishableGroup.getSelection().getActionCommand().equals("Yes")) {
 					g.isPerishable = true;
@@ -264,11 +291,14 @@ public class CreateGrocery extends JFrame {
 						g.isProduce = false;
 					}
 				}
-				else {
+				else if(PerishableGroup.getSelection().getActionCommand().equals("No")) {
 					g.isPerishable = false;
+					
 					ProduceNo.setEnabled(false);
 					ProduceYes.setEnabled(false);
 				}
+
+
 				
 				g.pe_storageTemp = StorageTemperatureTextField.getText();
 				g.type = TypeTextField.getText();
@@ -281,6 +311,52 @@ public class CreateGrocery extends JFrame {
 						WidthTextField.getText() + ", " + 
 						LengthTextField.getText() +
 						")";
+				
+				if(!ExpiryDateTextField.getText().matches("^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")) {
+					JOptionPane.showMessageDialog(null, "Date has to respest this format: YYYY-MM-DD");
+					return;
+				}
+
+				try {
+					Integer.parseInt(g.weight);
+				}
+				catch(NumberFormatException e2){
+					JOptionPane.showMessageDialog(null, "Weight has to be an integer!");
+					return;
+				}
+				
+				try {
+					Integer.parseInt(g.price);
+				}
+				catch(NumberFormatException e2){
+					JOptionPane.showMessageDialog(null, "Price has to be an integer!");
+					return;	
+				}
+				
+				try {
+					Integer.parseInt(HeightTextField.getText());
+				}
+				catch(NumberFormatException e2){
+					JOptionPane.showMessageDialog(null, "Height has to be an integer!");
+					return;	
+				}
+				
+				try {
+					Integer.parseInt(WidthTextField.getText());
+				}
+				catch(NumberFormatException e2){
+					JOptionPane.showMessageDialog(null, "Width has to be an integer!");
+					return;	
+				}
+				
+				try {
+					Integer.parseInt(LengthTextField.getText());
+				}
+				catch(NumberFormatException e2){
+					JOptionPane.showMessageDialog(null, "Length has to be an integer!");
+					return;	
+				}
+				
 				
 				CreateGroceryConfirm CGC = new CreateGroceryConfirm();
 				CGC.setVisible(true);
