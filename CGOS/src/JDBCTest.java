@@ -443,8 +443,8 @@ class simpleJDBC {
 		try {
 			String querySQL = "SELECT * FROM passenger"
 					+ " WHERE passengerid IN"
-					+ " (SELECT passengerid FROM has_restrictiontype_type"
-					+ " WHERE restrictiontype=\'" + restrictionType + "\';";
+					+ " (SELECT passengerid FROM has_restriction_type"
+					+ " WHERE restrictiontype=\'" + restrictionType + "\');";
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println(querySQL);
 			
