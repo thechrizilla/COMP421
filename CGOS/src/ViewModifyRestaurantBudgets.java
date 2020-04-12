@@ -41,7 +41,7 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 
 				if (x == JOptionPane.YES_OPTION) {
 					try {
-						simpleJDBC.getInstance().Close();
+						JDBCUser.getInstance().Close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -77,7 +77,7 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 		list_restaurants.setLayoutOrientation(JList.VERTICAL);
 		list_restaurants.setVisibleRowCount(-1);
 
-		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
+		JComboBox ShipNameComboBox = new JComboBox(JDBCUser.getInstance().GetShipNames().toArray());
 		ShipNameComboBox.setBounds(374, 25, 134, 27);
 		contentPane.add(ShipNameComboBox);
 		ShipNameComboBox.setSelectedIndex(-1);
@@ -89,7 +89,7 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 					Object o = ShipNameComboBox.getSelectedItem();
 					if (o == null) return;
 					selectedShip = o.toString();
-					budgetInfos = simpleJDBC.getInstance().GetBudgetInfo(o.toString());
+					budgetInfos = JDBCUser.getInstance().GetBudgetInfo(o.toString());
 					
 					ArrayList<String> toDisplay = new ArrayList<String>();
 					for (int i = 1; i < budgetInfos.size(); ++i) {

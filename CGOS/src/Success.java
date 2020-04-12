@@ -26,7 +26,7 @@ public class Success extends JDialog {
 
                 if (x == JOptionPane.YES_OPTION) {
                 	try {
-						simpleJDBC.getInstance().Close();
+						JDBCUser.getInstance().Close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

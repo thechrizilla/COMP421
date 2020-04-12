@@ -65,13 +65,13 @@ class BudgetUpdateInfo {
 	public String newBudget;
 }
 
-class simpleJDBC {
+class JDBCUser {
 	public SQLInfo info;
 
 	// singleton
-	private static simpleJDBC INSTANCE = null;
+	private static JDBCUser INSTANCE = null;
 
-	private simpleJDBC() throws SQLException {
+	private JDBCUser() throws SQLException {
 		int sqlCode = 0; // Variable to hold SQLCODE
 		String sqlState = "00000"; // Variable to hold SQLSTATE
 
@@ -94,9 +94,9 @@ class simpleJDBC {
 		System.out.println("JDBC User Constructor Succeeded & Finished");
 	}
 
-	public static simpleJDBC getInstance() throws SQLException {
+	public static JDBCUser getInstance() throws SQLException {
 		if (INSTANCE == null)
-			INSTANCE = new simpleJDBC();
+			INSTANCE = new JDBCUser();
 
 		return INSTANCE;
 	}
@@ -560,7 +560,7 @@ class simpleJDBC {
 	public void DeleteIngredient(int orderid) throws SQLException {
 		System.out.println("Deleting order " + orderid);
 		String getSQL = "SELECT grocerybarcode FROM grocery WHERE orderid=" + orderid + ";";
-		Statement stmt2 = simpleJDBC.getInstance().info.connection.createStatement();
+		Statement stmt2 = JDBCUser.getInstance().info.connection.createStatement();
 		ResultSet toDelete = stmt2.executeQuery(getSQL);
 		
 		while(toDelete.next()) {
@@ -620,7 +620,7 @@ class simpleJDBC {
 
 	public static void main(String[] args) {
 		try {
-			simpleJDBC user = new simpleJDBC();
+			JDBCUser user = new JDBCUser();
 
 			try {
 				AssignRandomRestrictions(user);
@@ -641,7 +641,7 @@ class simpleJDBC {
 		}
 	}
 
-	public static void TestFunction(simpleJDBC user) throws SQLException {
+	public static void TestFunction(JDBCUser user) throws SQLException {
 		// Creating test ingredient
 		IngredientInfo ing1 = new IngredientInfo();
 		ing1.shipName = "Titanic";
@@ -660,7 +660,7 @@ class simpleJDBC {
 		user.CreateGrocery(gro1);
 	}
 	
-	public static void AssignRandomRestrictions(simpleJDBC user) throws SQLException {
+	public static void AssignRandomRestrictions(JDBCUser user) throws SQLException {
 		String getSQL = "SELECT * FROM dietaryrestriction;";
 		ResultSet rs = user.info.statement.executeQuery(getSQL);
 		
@@ -676,7 +676,7 @@ class simpleJDBC {
 			pList.add(rs.getInt(1));
 		}
 		
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 20; i++) {
 			int rIndex = (int) (Math.random() * resList.size());
 			int pIndex = (int) (Math.random() * pList.size());
 			String addSQL = "INSERT INTO has_restriction_type VALUES (\'"
@@ -685,7 +685,7 @@ class simpleJDBC {
 		}
 	}
 
-	public static void TestCases(simpleJDBC user) throws SQLException {
+	public static void TestCases(JDBCUser user) throws SQLException {
 		// Creating test ingredient
 		IngredientInfo ing1 = new IngredientInfo();
 		ing1.shipName = "Titanic";

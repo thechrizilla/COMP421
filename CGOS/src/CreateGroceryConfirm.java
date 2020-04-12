@@ -30,7 +30,7 @@ public class CreateGroceryConfirm extends JFrame {
 
 				if (x == JOptionPane.YES_OPTION) {
 					try {
-						simpleJDBC.getInstance().Close();
+						JDBCUser.getInstance().Close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -56,7 +56,7 @@ public class CreateGroceryConfirm extends JFrame {
 		lblNewLabel.setBounds(292, 154, 71, 16);
 		contentPane.add(lblNewLabel);
 
-		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
+		JComboBox ShipNameComboBox = new JComboBox(JDBCUser.getInstance().GetShipNames().toArray());
 		ShipNameComboBox.setBounds(361, 150, 175, 27);
 		contentPane.add(ShipNameComboBox);
 
@@ -98,7 +98,7 @@ public class CreateGroceryConfirm extends JFrame {
 					Object o = ShipNameComboBox.getSelectedItem();
 					if (o == null)
 						return;
-					ArrayList<String> restaurants = simpleJDBC.getInstance().GetRestaurants(o.toString());
+					ArrayList<String> restaurants = JDBCUser.getInstance().GetRestaurants(o.toString());
 					RestaurantComboBox.removeAllItems();
 					for (String r : restaurants) {
 						RestaurantComboBox.insertItemAt(r, 0);
@@ -160,7 +160,7 @@ public class CreateGroceryConfirm extends JFrame {
 				ArrayList<String[]> rInfo;
 				try {
 					IngredientsComboBox.removeAllItems();
-					rInfo = simpleJDBC.getInstance().GetRestaurantOrders(restaurant);
+					rInfo = JDBCUser.getInstance().GetRestaurantOrders(restaurant);
 					for (int i = 1; i < rInfo.size(); i++) {
 						IngredientsComboBox.insertItemAt(rInfo.get(i)[4] + " (" + rInfo.get(i)[0] + ")", 0);
 					}
@@ -203,7 +203,7 @@ public class CreateGroceryConfirm extends JFrame {
 				g.orderID = orderID.reverse().toString();
 				
 				try {
-					simpleJDBC.getInstance().CreateGrocery(g);
+					JDBCUser.getInstance().CreateGrocery(g);
 					Success S = new Success();
 					S.setVisible(true);
 					dispose();

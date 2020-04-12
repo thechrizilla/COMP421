@@ -39,7 +39,7 @@ public class ViewPassengersWithRestrictions extends JFrame {
 
                 if (x == JOptionPane.YES_OPTION) {
                 	try {
-						simpleJDBC.getInstance().Close();
+						JDBCUser.getInstance().Close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -60,7 +60,7 @@ public class ViewPassengersWithRestrictions extends JFrame {
 		ShipNameLabel.setBounds(273, 38, 71, 16);
 		contentPane.add(ShipNameLabel);
 		
-		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
+		JComboBox ShipNameComboBox = new JComboBox(JDBCUser.getInstance().GetShipNames().toArray());
 		ShipNameComboBox.setBounds(343, 34, 170, 27);
 		contentPane.add(ShipNameComboBox);
 		
@@ -84,7 +84,7 @@ public class ViewPassengersWithRestrictions extends JFrame {
 						return;
 					
 					shipName = o.toString();
-					ArrayList<String> restrictionList = simpleJDBC.getInstance().GetListOfDietaryRestrictions(shipName);
+					ArrayList<String> restrictionList = JDBCUser.getInstance().GetListOfDietaryRestrictions(shipName);
 					restrictionComboBox.removeAllItems();
 					for (String r : restrictionList) {
 						restrictionComboBox.insertItemAt(r, 0);
@@ -118,14 +118,14 @@ public class ViewPassengersWithRestrictions extends JFrame {
 				model.clear();
 				
 				try {
-					// passengerid, dob, firstname, lastname, gender, ethnicity
-					passengerInfos = simpleJDBC.getInstance().GetPassengersWithDietaryRestriction(restrictionType, shipName);
+					// passengerid, dob, lastname, firstname, gender, ethnicity
+					passengerInfos = JDBCUser.getInstance().GetPassengersWithDietaryRestriction(restrictionType, shipName);
 					String[] toDisplay = new String[passengerInfos.size()-1];
 					for (int i = 1; i < passengerInfos.size(); ++i) {
 						String[] passenger = passengerInfos.get(i);
 						String row = passenger[0] + " - "
 						+ passenger[1] + " - " 
-						+ "\"" + passenger[3] + " " 
+						+ "\"" + passenger[3] + ", " 
 						+ passenger[2] + "\" - "
 						+ passenger[4] + " - " 
 						+ passenger[5];

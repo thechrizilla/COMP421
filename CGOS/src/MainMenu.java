@@ -50,7 +50,7 @@ public class MainMenu extends JFrame {
 
                 if (x == JOptionPane.YES_OPTION) {
                 	try {
-						simpleJDBC.getInstance().Close();
+						JDBCUser.getInstance().Close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -64,7 +64,7 @@ public class MainMenu extends JFrame {
 
 		try {
 			System.out.println("Before GetInstance");
-			simpleJDBC.getInstance();
+			JDBCUser.getInstance();
 			System.out.println("After GetInstance");
 		}
 		catch (SQLException e){
@@ -180,7 +180,7 @@ public class MainMenu extends JFrame {
 
 	                if (x == JOptionPane.YES_OPTION) {
 	                	try {
-							simpleJDBC.getInstance().Close();
+							JDBCUser.getInstance().Close();
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

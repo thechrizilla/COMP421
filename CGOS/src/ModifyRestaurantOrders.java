@@ -35,7 +35,7 @@ public class ModifyRestaurantOrders extends JFrame {
 
                 if (x == JOptionPane.YES_OPTION) {
                 	try {
-						simpleJDBC.getInstance().Close();
+						JDBCUser.getInstance().Close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -105,7 +105,7 @@ public class ModifyRestaurantOrders extends JFrame {
 				}
 				
 				try {
-					simpleJDBC.getInstance().UpdateIngredient(updateInfo);
+					JDBCUser.getInstance().UpdateIngredient(updateInfo);
 					Success S = new Success();
 					S.setVisible(true);
 					dispose();

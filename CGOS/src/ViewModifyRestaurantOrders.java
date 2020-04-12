@@ -40,7 +40,7 @@ public class ViewModifyRestaurantOrders extends JFrame {
 
                 if (x == JOptionPane.YES_OPTION) {
                 	try {
-						simpleJDBC.getInstance().Close();
+						JDBCUser.getInstance().Close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -61,7 +61,7 @@ public class ViewModifyRestaurantOrders extends JFrame {
 		ShipNameLabel.setBounds(265, 38, 71, 16);
 		contentPane.add(ShipNameLabel);
 		
-		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
+		JComboBox ShipNameComboBox = new JComboBox(JDBCUser.getInstance().GetShipNames().toArray());
 		ShipNameComboBox.setBounds(334, 34, 170, 27);
 		contentPane.add(ShipNameComboBox);
 		
@@ -116,7 +116,7 @@ public class ViewModifyRestaurantOrders extends JFrame {
 						return;
 
 					shipName = o.toString();
-					ArrayList<String> restaurants = simpleJDBC.getInstance().GetRestaurants(shipName);
+					ArrayList<String> restaurants = JDBCUser.getInstance().GetRestaurants(shipName);
 					RestaurantComboBox.removeAllItems();
 					for (String r : restaurants) {
 						RestaurantComboBox.insertItemAt(r, 0);
@@ -174,7 +174,7 @@ public class ViewModifyRestaurantOrders extends JFrame {
 				
 				// orderid, shipname, rname, rno, type, numgro, orderweight, totalweight
 				try {
-					orderInfos = simpleJDBC.getInstance().GetRestaurantOrders(rInfo);
+					orderInfos = JDBCUser.getInstance().GetRestaurantOrders(rInfo);
 					ArrayList<String> toDisplay = new ArrayList<String>();
 					for (int i = 1; i < orderInfos.size(); ++i) {
 						String[] order = orderInfos.get(i);
