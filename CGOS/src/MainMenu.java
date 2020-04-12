@@ -95,6 +95,13 @@ public class MainMenu extends JFrame {
 		contentPane.add(OrderNewIngredientButton);
 		
 		JButton ViewModifyBudgets = new JButton("View/Modify Restaurant Budgets");
+		ViewModifyBudgets.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewModifyRestaurantBudgets VMRB = new ViewModifyRestaurantBudgets();
+				VMRB.setVisible(true);
+				dispose();
+			}
+		});
 		ViewModifyBudgets.setBounds(101, 95, 240, 29);
 		contentPane.add(ViewModifyBudgets);
 		
@@ -102,12 +109,10 @@ public class MainMenu extends JFrame {
 		AutoAdjustBudgets.setBounds(134, 132, 160, 29);
 		contentPane.add(AutoAdjustBudgets);
 		
-		JButton ViewModifyRestaurantOrdersButton = new JButton("View/Modify Restaurant Orders");
+		JButton ViewModifyRestaurantOrdersButton = new JButton("View Passengers With Dietary Restrictions");
 		ViewModifyRestaurantOrdersButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ViewModifyRestaurantBudgets VMRB = new ViewModifyRestaurantBudgets();
-				VMRB.setVisible(true);
-				dispose();
+
 			}
 		});
 		ViewModifyRestaurantOrdersButton.setBounds(101, 173, 229, 29);
