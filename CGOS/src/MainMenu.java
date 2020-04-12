@@ -103,6 +103,13 @@ public class MainMenu extends JFrame {
 		contentPane.add(AutoAdjustBudgets);
 		
 		JButton ViewModifyRestaurantOrdersButton = new JButton("View/Modify Restaurant Orders");
+		ViewModifyRestaurantOrdersButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewModifyRestaurantBudgets VMRB = new ViewModifyRestaurantBudgets();
+				VMRB.setVisible(true);
+				dispose();
+			}
+		});
 		ViewModifyRestaurantOrdersButton.setBounds(101, 173, 229, 29);
 		contentPane.add(ViewModifyRestaurantOrdersButton);
 		
