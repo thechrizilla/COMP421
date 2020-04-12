@@ -349,7 +349,7 @@ class simpleJDBC {
 	}
 
 	// This function needs restaurant.shipName and restaurant.restaurantName
-	public String[][] GetRestaurantOrders(RestaurantInfo restaurant) {
+	public ArrayList<String[]> GetRestaurantOrders(RestaurantInfo restaurant) {
 		try {
 			int numRows = -1;
 			String countSQL = "SELECT COUNT(*) FROM ingredients_info" + " WHERE shipname=\'" + restaurant.shipname
@@ -363,25 +363,8 @@ class simpleJDBC {
 			System.out.println(querySQL);
 			rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched ingredients for " + restaurant.shipname + ", " + restaurant.restaurantName);
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int numCols = rsmd.getColumnCount();
-
-			String[][] table = new String[numRows + 1][numCols];
-			int i = 0;
-			for (int j = 0; j < numCols; ++j) {
-				table[i][j] = rsmd.getColumnName(j + 1);
-			}
-
-			i++;
-			while (rs.next()) {
-				for (int j = 0; j < numCols; ++j) {
-					Object colResult = rs.getObject(j + 1);
-					table[i][j] = String.valueOf(colResult);
-				}
-				i++;
-			}
-
-			return table;
+			
+			return GetArrayListFromResultSet(rs);
 
 		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
@@ -393,7 +376,7 @@ class simpleJDBC {
 		return null;
 	}
 
-	public String[][] GetBudgetInfo(String shipName) {
+	public ArrayList<String[]> GetBudgetInfo(String shipName) {
 		try {
 			int numRows = -1;
 			String countSQL = "SELECT COUNT(*) FROM restaurant WHERE shipname=\'" + shipName + "\';";
@@ -407,25 +390,9 @@ class simpleJDBC {
 			System.out.println(querySQL);
 			rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched budgets for " + shipName);
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int numCols = rsmd.getColumnCount();
+			
+			return GetArrayListFromResultSet(rs);
 
-			String[][] table = new String[numRows + 1][numCols];
-			int i = 0;
-			for (int j = 0; j < numCols; ++j) {
-				table[i][j] = rsmd.getColumnName(j + 1);
-			}
-
-			i++;
-			while (rs.next()) {
-				for (int j = 0; j < numCols; ++j) {
-					Object colResult = rs.getObject(j + 1);
-					table[i][j] = String.valueOf(colResult);
-				}
-				i++;
-			}
-
-			return table;
 		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
 			info.sqlState = e.getSQLState(); // Get SQLSTATE
@@ -486,6 +453,52 @@ class simpleJDBC {
 		return null;
 	}
 
+	public ArrayList<String[]> GetPassengersWithDietaryRestriction(String restrictionType){
+		try {
+			String querySQL = "SELECT * FROM passenger"
+					+ " WHERE passengerid IN"
+					+ " (SELECT passengerid FROM has_restrictiontype_type"
+					+ " WHERE restrictiontype=\'" + restrictionType + "\';";
+			ResultSet rs = info.statement.executeQuery(querySQL);
+			System.out.println(querySQL);
+			
+			return GetArrayListFromResultSet(rs);
+
+		} catch (SQLException e) {
+			info.sqlCode = e.getErrorCode(); // Get SQLCODE
+			info.sqlState = e.getSQLState(); // Get SQLSTATE
+			System.out.println("Error getting passengers with dietary restriction " + restrictionType);
+			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+		}
+		
+		return null;
+	}
+	
+	public ArrayList<String[]> GetArrayListFromResultSet(ResultSet rs) throws SQLException{
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int numCols = rsmd.getColumnCount();
+
+		ArrayList<String[]> list = new ArrayList<String[]>();
+		
+		// Add column headers
+		String[] row = new String[numCols];
+		for (int i = 0; i < numCols; ++i) {
+			row[i] = rsmd.getColumnName(i+1);
+		}
+		list.add(row);
+		
+		// Add each row
+		while (rs.next()) {
+			row = new String[numCols];
+			for (int i = 0; i < numCols; ++i) {
+				row[i] = String.valueOf(rs.getObject(i+1));
+			}
+			list.add(row);
+		}
+		
+		return list;
+	}
+	
 	public void UpdateUsedBudgets() throws SQLException {
 		try {
 			String querySQL = "SELECT update_usedBudgets();";
@@ -538,7 +551,6 @@ class simpleJDBC {
 		try {
 			System.out.println("\nDeleting test values...");
 			Statement stmt2 = info.connection.createStatement();
-			System.out.println("Second statement created?");
 
 			// Find all Test groceries
 			String getSQL = "SELECT grocerybarcode FROM grocery WHERE type='Test';";
@@ -582,7 +594,7 @@ class simpleJDBC {
 			simpleJDBC user = new simpleJDBC();
 
 			try {
-// 				TestCases(user);
+ 				TestCases(user);
 //				TestFunction(user);
 				user.DeleteTestVals();
 			} catch (IllegalArgumentException e) {
@@ -682,11 +694,11 @@ class simpleJDBC {
 		System.out.println("\nAll restauraunts from " + shipNames.get(0));
 		System.out.println(Arrays.toString(restaurantNames.toArray()));
 
-		String[][] budgetInfo = user.GetBudgetInfo(shipNames.get(0));
+		ArrayList<String[]> budgetInfo = user.GetBudgetInfo(shipNames.get(0));
 		System.out.println("\nBudget info for Ship " + shipNames.get(0));
-		for (int i = 0; i < budgetInfo.length; ++i) {
-			for (int j = 0; j < budgetInfo[0].length; ++j) {
-				System.out.print(budgetInfo[i][j]);
+		for (int i = 0; i < budgetInfo.size(); ++i) {
+			for (int j = 0; j < budgetInfo.get(0).length; ++j) {
+				System.out.print(budgetInfo.get(i)[j]);
 			}
 			System.out.println();
 		}
@@ -694,11 +706,11 @@ class simpleJDBC {
 		RestaurantInfo r1 = new RestaurantInfo();
 		r1.shipname = "Titanic";
 		r1.restaurantName = "Pizza Pizza";
-		String[][] restaurantOrders = user.GetRestaurantOrders(r1);
+		ArrayList<String[]> restaurantOrders = user.GetRestaurantOrders(r1);
 		System.out.println("\nOrders for " + r1.shipname + ", " + r1.restaurantName);
-		for (int i = 0; i < restaurantOrders.length; ++i) {
-			for (int j = 0; j < restaurantOrders[0].length; ++j) {
-				System.out.print(restaurantOrders[i][j]);
+		for (int i = 0; i < restaurantOrders.size(); ++i) {
+			for (int j = 0; j < restaurantOrders.get(0).length; ++j) {
+				System.out.print(restaurantOrders.get(i)[j]);
 			}
 			System.out.println();
 		}
