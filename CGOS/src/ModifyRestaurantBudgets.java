@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -17,8 +19,7 @@ public class ModifyRestaurantBudgets extends JFrame {
 	private JPanel contentPane;
 	private JTextField NewBudgetTextField;
 
-
-	public ModifyRestaurantBudgets() {
+	public ModifyRestaurantBudgets(String[] restaurantInfo, String shipName) {
 		this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent evt){
                 int x = JOptionPane.showConfirmDialog(null, 
@@ -44,9 +45,23 @@ public class ModifyRestaurantBudgets extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnNewButton = new JButton("Confirm");
-		btnNewButton.setBounds(157, 227, 117, 29);
-		contentPane.add(btnNewButton);
+//		String querySQL = "SELECT roomnumber, restaurantname, capacity, restaurantbudget, usedBudget";
+		String rName = restaurantInfo[1];
+		String rNo = restaurantInfo[0];
+		String restaurantName = rName + " (" + rNo + ")";
+		String budgetValues = "$" + restaurantInfo[4] + "/" + restaurantInfo[3];
+		
+		JLabel ShipNameLabel = new JLabel("Ship: " + shipName);
+		ShipNameLabel.setBounds(126, 46, 250, 16);
+		contentPane.add(ShipNameLabel);
+		
+		JLabel RestaurantNameLabel = new JLabel("Restaurant: " + restaurantName);
+		RestaurantNameLabel.setBounds(126, 66, 250, 16);
+		contentPane.add(RestaurantNameLabel);
+
+		JLabel budgetLabel = new JLabel("Budget: " + budgetValues);
+		budgetLabel.setBounds(126, 86, 250, 16);
+		contentPane.add(budgetLabel);
 		
 		JLabel NewBudgetLabel = new JLabel("New Budget:");
 		NewBudgetLabel.setBounds(125, 121, 78, 16);
@@ -56,5 +71,43 @@ public class ModifyRestaurantBudgets extends JFrame {
 		NewBudgetTextField.setBounds(203, 116, 130, 26);
 		contentPane.add(NewBudgetTextField);
 		NewBudgetTextField.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Confirm");
+		btnNewButton.setBounds(157, 227, 117, 29);
+		contentPane.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				// Finish here
+				BudgetUpdateInfo newInfo = new BudgetUpdateInfo();
+				newInfo.newBudget = NewBudgetTextField.getText();
+				newInfo.roomNo = rNo;
+				newInfo.shipname = shipName;
+				
+				try {
+					Float.parseFloat(newInfo.newBudget);
+				}
+				catch(NumberFormatException e2){
+					JOptionPane.showMessageDialog(null, "Budget must be a number!");
+					return;	
+				}
+				
+				try {
+					simpleJDBC.getInstance().UpdateBudget(newInfo);
+				} catch (SQLException e1) {
+					System.out.println("Error updating budget info for " + rName + ", " + rNo);
+					e1.printStackTrace();
+				}
+				System.out.println("Success");
+				
+//				int index = list_restaurants.getSelectedIndex();
+//				String[] selectedRestaurant = budgetInfos.get(index);
+//				System.out.println("Selected index: " + index);
+//				
+//				ModifyRestaurantBudgets modifyBudgetPopup = new ModifyRestaurantBudgets(selectedRestaurant, selectedShip);
+//				modifyBudgetPopup.setVisible(true);
+//				dispose();
+			}
+		});
 	}
 }
