@@ -113,16 +113,18 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		AutoAdjustBudgets.setBounds(134, 132, 160, 29);
+		AutoAdjustBudgets.setBounds(101, 136, 240, 29);
 		contentPane.add(AutoAdjustBudgets);
 		
 		JButton ViewModifyRestaurantOrdersButton = new JButton("View Passengers With Dietary Restrictions");
 		ViewModifyRestaurantOrdersButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				ViewPassengersWithRestrictions VPWR = new ViewPassengersWithRestrictions();
+				VPWR.setVisible(true);
+				dispose();
 			}
 		});
-		ViewModifyRestaurantOrdersButton.setBounds(101, 173, 229, 29);
+		ViewModifyRestaurantOrdersButton.setBounds(71, 173, 296, 29);
 		contentPane.add(ViewModifyRestaurantOrdersButton);
 		
 		JButton QuitButton = new JButton("Quit");
