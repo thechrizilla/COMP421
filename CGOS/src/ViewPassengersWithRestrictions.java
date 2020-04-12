@@ -50,37 +50,29 @@ public class ViewPassengersWithRestrictions extends JFrame {
                 }
             }
         });
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel ShipNameLabel = new JLabel("Ship Name:");
-		ShipNameLabel.setBounds(118, 38, 71, 16);
+		ShipNameLabel.setBounds(273, 38, 71, 16);
 		contentPane.add(ShipNameLabel);
 		
 		JComboBox ShipNameComboBox = new JComboBox();
-		ShipNameComboBox.setBounds(188, 34, 170, 27);
+		ShipNameComboBox.setBounds(343, 34, 170, 27);
 		contentPane.add(ShipNameComboBox);
 		
 		JLabel restrictionLabel = new JLabel("Restriction Type:");
-		restrictionLabel.setBounds(78, 77, 111, 16);
+		restrictionLabel.setBounds(233, 77, 111, 16);
 		contentPane.add(restrictionLabel);
 		
 		JComboBox restrictionComboBox = new JComboBox();
-		restrictionComboBox.setBounds(188, 73, 170, 27);
+		restrictionComboBox.setBounds(343, 73, 170, 27);
 		contentPane.add(restrictionComboBox);
 		
 		model = new DefaultListModel();
-		JList list_orders = new JList(model);
-		list_orders.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		list_orders.setLayoutOrientation(JList.VERTICAL);
-		list_orders.setVisibleRowCount(-1);
-		
-		JScrollPane budgetInfoListScroller = new JScrollPane(list_orders);
-		budgetInfoListScroller.setBounds(46, 122, 347, 95);
-		contentPane.add(budgetInfoListScroller);
 		
 		ShipNameComboBox.addPopupMenuListener(new PopupMenuListener() {
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -149,7 +141,12 @@ public class ViewPassengersWithRestrictions extends JFrame {
 					String[] toDisplay = new String[passengerInfos.size()-1];
 					for (int i = 1; i < passengerInfos.size(); ++i) {
 						String[] passenger = passengerInfos.get(i);
-						String row = passenger[0] + ", " + passenger[1] + ", " + passenger[2] + ", " + passenger[3] + ", " + passenger[4] + ", " + passenger[5];
+						String row = "Passenger ID: " + passenger[0] + ", " + 
+						"Date Of Birth: " + passenger[1] + ", " + 
+						"First Name: " + passenger[2] + ", " + 
+						"Last Name: " + passenger[3] + ", " + 
+						"Gender: " + passenger[4] + ", " + 
+						"Ethinicity: " + passenger[5];
 						toDisplay[i-1] = row;
 					}
 					
@@ -185,12 +182,14 @@ public class ViewPassengersWithRestrictions extends JFrame {
 
 			}
 		});
-		BackButton.setBounds(6, 243, 117, 29);
+		BackButton.setBounds(45, 410, 117, 29);
 		contentPane.add(BackButton);
-		
-		JList list = new JList();
-		list.setBounds(10, 10, 100, 100);
-		contentPane.add(list);
+		JList list_orders = new JList(model);
+		list_orders.setBounds(45, 112, 758, 286);
+		contentPane.add(list_orders);
+		list_orders.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list_orders.setLayoutOrientation(JList.VERTICAL);
+		list_orders.setVisibleRowCount(-1);
 	}
 	
 	

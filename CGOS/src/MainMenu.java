@@ -11,6 +11,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 public class MainMenu extends JFrame {
 
@@ -60,7 +62,7 @@ public class MainMenu extends JFrame {
             }
         });
 		
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -74,7 +76,7 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		CreateGroceryButton.setBounds(162, 57, 117, 29);
+		CreateGroceryButton.setBounds(366, 255, 117, 29);
 		contentPane.add(CreateGroceryButton);
 		
 		JButton OrderNewIngredientButton = new JButton("Order New Ingredient");
@@ -91,7 +93,7 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		OrderNewIngredientButton.setBounds(134, 21, 171, 29);
+		OrderNewIngredientButton.setBounds(338, 214, 171, 29);
 		contentPane.add(OrderNewIngredientButton);
 		
 		JButton ViewModifyBudgets = new JButton("View/Modify Restaurant Budgets");
@@ -102,7 +104,7 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		ViewModifyBudgets.setBounds(101, 95, 240, 29);
+		ViewModifyBudgets.setBounds(302, 296, 240, 29);
 		contentPane.add(ViewModifyBudgets);
 		
 		JButton AutoAdjustBudgets = new JButton("View/Modify Restaurant Orders");
@@ -113,7 +115,7 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		AutoAdjustBudgets.setBounds(101, 136, 240, 29);
+		AutoAdjustBudgets.setBounds(302, 337, 240, 29);
 		contentPane.add(AutoAdjustBudgets);
 		
 		JButton ViewModifyRestaurantOrdersButton = new JButton("View Passengers With Dietary Restrictions");
@@ -124,12 +126,19 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		ViewModifyRestaurantOrdersButton.setBounds(71, 173, 296, 29);
+		ViewModifyRestaurantOrdersButton.setBounds(276, 378, 296, 29);
 		contentPane.add(ViewModifyRestaurantOrdersButton);
 		
 		JButton QuitButton = new JButton("Quit");
-		QuitButton.setBounds(162, 214, 117, 29);
+		QuitButton.setBounds(366, 419, 117, 29);
 		contentPane.add(QuitButton);
+		
+		JLabel lblNewLabel = new JLabel("<html><div style='text-align: center;'>WELCOME to the CGOS Application! <br/> Please select one of the options below! <br/> If you want to quit the application, simply click the \"Quit\" button.</html>");
+		lblNewLabel.setFont(new Font(".AppleSystemUIFont", Font.PLAIN, 15));
+		lblNewLabel.setBounds(213, 41, 459, 91);
+		lblNewLabel.setHorizontalAlignment(JLabel.CENTER);
+		lblNewLabel.setVerticalAlignment(JLabel.CENTER);
+		contentPane.add(lblNewLabel);
 		QuitButton.addActionListener(new ActionListener() {
 			 public void actionPerformed(ActionEvent evt){
 	                int x = JOptionPane.showConfirmDialog(null, 
@@ -151,5 +160,4 @@ public class MainMenu extends JFrame {
 	            }
 		});
 	}
-
 }

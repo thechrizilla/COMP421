@@ -52,32 +52,33 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 				}
 			}
 		});
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JLabel ShipNameLabel = new JLabel("Ship Name:");
-		ShipNameLabel.setBounds(141, 18, 71, 16);
+		ShipNameLabel.setBounds(304, 29, 71, 16);
 		contentPane.add(ShipNameLabel);
 
 		JLabel RestaurantNameLabel = new JLabel("Restaurant Name and Budget:");
-		RestaurantNameLabel.setBounds(126, 46, 185, 16);
+		RestaurantNameLabel.setBounds(321, 64, 185, 16);
 		contentPane.add(RestaurantNameLabel);
 
 		model = new DefaultListModel();
+		
+		JScrollPane budgetInfoListScroller = new JScrollPane();
+		budgetInfoListScroller.setBounds(72, 92, 712, 294);
+		contentPane.add(budgetInfoListScroller);
 		JList list_restaurants = new JList(model);
+		budgetInfoListScroller.setViewportView(list_restaurants);
 		list_restaurants.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		list_restaurants.setLayoutOrientation(JList.VERTICAL);
 		list_restaurants.setVisibleRowCount(-1);
-		
-		JScrollPane budgetInfoListScroller = new JScrollPane(list_restaurants);
-		budgetInfoListScroller.setBounds(65, 75, 300, 125);
-		contentPane.add(budgetInfoListScroller);
 
 		JComboBox ShipNameComboBox = new JComboBox();
-		ShipNameComboBox.setBounds(222, 14, 134, 27);
+		ShipNameComboBox.setBounds(374, 25, 134, 27);
 		contentPane.add(ShipNameComboBox);
 		
 		ShipNameComboBox.addPopupMenuListener(new PopupMenuListener()
@@ -150,10 +151,9 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 			}
 		});
 		
-		SelectButton.setBounds(160, 215, 117, 29);
+		SelectButton.setBounds(356, 398, 117, 29);
 		contentPane.add(SelectButton);
-
-
+		
 		JButton BackButton = new JButton("Back");
 		BackButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -169,9 +169,7 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 
 			}
 		});
-		BackButton.setBounds(6, 272, 117, 29);
-		contentPane.add(BackButton);
-		BackButton.setBounds(6, 243, 117, 29);
+		BackButton.setBounds(29, 424, 117, 29);
 		contentPane.add(BackButton);
 
 

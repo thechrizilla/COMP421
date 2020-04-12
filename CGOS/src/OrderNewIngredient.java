@@ -47,34 +47,34 @@ public class OrderNewIngredient extends JFrame {
                 }
             }
         });
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Ship Name:");
-		lblNewLabel.setBounds(129, 66, 71, 16);
+		lblNewLabel.setBounds(257, 66, 71, 16);
 		contentPane.add(lblNewLabel);
 		
 		JLabel restaurantNameLabel = new JLabel("Restaurant Name:");
-		restaurantNameLabel.setBounds(89, 94, 111, 16);
+		restaurantNameLabel.setBounds(217, 111, 111, 16);
 		contentPane.add(restaurantNameLabel);
 		
 		JLabel lblNewLabel_2 = new JLabel("Ingredient Type:");
-		lblNewLabel_2.setBounds(98, 122, 102, 16);
+		lblNewLabel_2.setBounds(226, 150, 102, 16);
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Weight:");
-		lblNewLabel_3.setBounds(153, 150, 47, 16);
+		lblNewLabel_3.setBounds(281, 188, 47, 16);
 		contentPane.add(lblNewLabel_3);
 		
 		JComboBox ShipNameComboBox = new JComboBox();
-		ShipNameComboBox.setBounds(212, 62, 130, 27);
+		ShipNameComboBox.setBounds(327, 62, 163, 27);
 		contentPane.add(ShipNameComboBox);
 
 		JComboBox RestaurantComboBox = new JComboBox();
-		RestaurantComboBox.setBounds(212, 90, 130, 27);
+		RestaurantComboBox.setBounds(327, 107, 163, 27);
 		contentPane.add(RestaurantComboBox);
 		RestaurantComboBox.setEnabled(false);
 		restaurantNameLabel.setEnabled(false);
@@ -122,12 +122,12 @@ public class OrderNewIngredient extends JFrame {
 		
 		
 		IngredientTypeTextField = new JTextField();
-		IngredientTypeTextField.setBounds(212, 117, 130, 26);
+		IngredientTypeTextField.setBounds(333, 145, 157, 26);
 		contentPane.add(IngredientTypeTextField);
 		IngredientTypeTextField.setColumns(10);
 		
 		WeightTextField = new JTextField();
-		WeightTextField.setBounds(212, 145, 130, 26);
+		WeightTextField.setBounds(333, 183, 157, 26);
 		contentPane.add(WeightTextField);
 		WeightTextField.setColumns(10);
 		
@@ -158,7 +158,7 @@ public class OrderNewIngredient extends JFrame {
 				}
 			}
 		});
-		OrderButton.setBounds(169, 219, 117, 29);
+		OrderButton.setBounds(355, 380, 117, 29);
 		contentPane.add(OrderButton);
 		
 		JButton BackButton = new JButton("Back");
@@ -176,7 +176,7 @@ public class OrderNewIngredient extends JFrame {
 
 			}
 		});
-		BackButton.setBounds(6, 243, 117, 29);
+		BackButton.setBounds(34, 409, 117, 29);
 		contentPane.add(BackButton);
 	}
 }

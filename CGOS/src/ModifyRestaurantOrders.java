@@ -46,42 +46,42 @@ public class ModifyRestaurantOrders extends JFrame {
                 }
             }
         });
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel orderLabel = new JLabel("Order ID: " + orderid);
-		orderLabel.setBounds(159, 60, 200, 16);
+		orderLabel.setBounds(315, 104, 200, 16);
 		contentPane.add(orderLabel);
 		
 		JLabel typeLabel = new JLabel("Type:");
-		typeLabel.setBounds(159, 95, 34, 16);
+		typeLabel.setBounds(272, 143, 34, 16);
 		contentPane.add(typeLabel);
 		
 		typeInput = new JTextField();
-		typeInput.setBounds(193, 90, 130, 26);
+		typeInput.setBounds(315, 138, 200, 26);
 		contentPane.add(typeInput);
 		typeInput.setColumns(10);
 		typeInput.setText(type);
 		
 		JLabel weightLabel = new JLabel("Weight:");
-		weightLabel.setBounds(146, 123, 47, 16);
+		weightLabel.setBounds(261, 181, 47, 16);
 		contentPane.add(weightLabel);
 		
 		JLabel totalWeightLabel = new JLabel("Total Weight: " + totalWeight);
-		totalWeightLabel.setBounds(146, 146, 200, 16);
+		totalWeightLabel.setBounds(315, 214, 200, 16);
 		contentPane.add(totalWeightLabel);
 		
 		weightInput = new JTextField();
-		weightInput.setBounds(193, 118, 130, 26);
+		weightInput.setBounds(315, 176, 200, 26);
 		contentPane.add(weightInput);
 		weightInput.setColumns(10);
 		weightInput.setText(curWeight);
 		
 		JButton confirmBtn = new JButton("Confirm");
-		confirmBtn.setBounds(159, 232, 117, 29);
+		confirmBtn.setBounds(363, 363, 117, 29);
 		contentPane.add(confirmBtn);
 		confirmBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -120,23 +120,19 @@ public class ModifyRestaurantOrders extends JFrame {
 			}
 		});
 		
-		JButton BackButton = new JButton("Back");
-		BackButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MainMenu MM;
-				try {
-					MM = new MainMenu();
-					MM.setVisible(true);
-					dispose();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 
+
+		
+		JButton Back = new JButton("Back");
+		Back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewModifyRestaurantOrders VMRO = new ViewModifyRestaurantOrders();
+				VMRO.setVisible(true);
+				dispose();
 			}
 		});
-		BackButton.setBounds(6, 243, 117, 29);
-		contentPane.add(BackButton);
+		Back.setBounds(37, 414, 117, 29);
+		contentPane.add(Back);
 	}
 
 }

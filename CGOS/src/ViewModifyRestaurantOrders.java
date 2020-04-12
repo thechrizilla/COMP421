@@ -51,40 +51,41 @@ public class ViewModifyRestaurantOrders extends JFrame {
                 }
             }
         });
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel ShipNameLabel = new JLabel("Ship Name:");
-		ShipNameLabel.setBounds(118, 38, 71, 16);
+		ShipNameLabel.setBounds(265, 38, 71, 16);
 		contentPane.add(ShipNameLabel);
 		
 		JComboBox ShipNameComboBox = new JComboBox();
-		ShipNameComboBox.setBounds(188, 34, 170, 27);
+		ShipNameComboBox.setBounds(334, 34, 170, 27);
 		contentPane.add(ShipNameComboBox);
 		
 		JLabel RestaurantLabel = new JLabel("Restaurant Name:");
-		RestaurantLabel.setBounds(78, 77, 111, 16);
+		RestaurantLabel.setBounds(225, 77, 111, 16);
 		contentPane.add(RestaurantLabel);
 		
 		JComboBox RestaurantComboBox = new JComboBox();
-		RestaurantComboBox.setBounds(188, 73, 170, 27);
+		RestaurantComboBox.setBounds(334, 73, 170, 27);
 		contentPane.add(RestaurantComboBox);
 		
 		model = new DefaultListModel();
+		
+		JScrollPane budgetInfoListScroller = new JScrollPane();
+		budgetInfoListScroller.setBounds(46, 122, 752, 233);
+		contentPane.add(budgetInfoListScroller);
 		JList list_orders = new JList(model);
+		budgetInfoListScroller.setViewportView(list_orders);
 		list_orders.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		list_orders.setLayoutOrientation(JList.VERTICAL);
 		list_orders.setVisibleRowCount(-1);
-		
-		JScrollPane budgetInfoListScroller = new JScrollPane(list_orders);
-		budgetInfoListScroller.setBounds(46, 122, 347, 95);
-		contentPane.add(budgetInfoListScroller);
 	
 		JButton modifyOrderBtn = new JButton("Modify Order");
-		modifyOrderBtn.setBounds(181, 243, 117, 29);
+		modifyOrderBtn.setBounds(371, 367, 117, 29);
 		contentPane.add(modifyOrderBtn);
 		modifyOrderBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -229,7 +230,7 @@ public class ViewModifyRestaurantOrders extends JFrame {
 
 			}
 		});
-		BackButton.setBounds(6, 243, 117, 29);
+		BackButton.setBounds(40, 409, 117, 29);
 		contentPane.add(BackButton);
 	}
 

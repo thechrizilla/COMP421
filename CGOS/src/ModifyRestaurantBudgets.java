@@ -39,7 +39,7 @@ public class ModifyRestaurantBudgets extends JFrame {
                 }
             }
         });
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -52,29 +52,40 @@ public class ModifyRestaurantBudgets extends JFrame {
 		String budgetValues = "$" + restaurantInfo[4] + "/" + restaurantInfo[3];
 		
 		JLabel ShipNameLabel = new JLabel("Ship: " + shipName);
-		ShipNameLabel.setBounds(126, 46, 250, 16);
+		ShipNameLabel.setBounds(289, 142, 250, 16);
 		contentPane.add(ShipNameLabel);
 		
 		JLabel RestaurantNameLabel = new JLabel("Restaurant: " + restaurantName);
-		RestaurantNameLabel.setBounds(126, 66, 250, 16);
+		RestaurantNameLabel.setBounds(289, 193, 250, 16);
 		contentPane.add(RestaurantNameLabel);
 
 		JLabel budgetLabel = new JLabel("Budget: " + budgetValues);
-		budgetLabel.setBounds(126, 86, 250, 16);
+		budgetLabel.setBounds(289, 238, 250, 16);
 		contentPane.add(budgetLabel);
 		
 		JLabel NewBudgetLabel = new JLabel("New Budget:");
-		NewBudgetLabel.setBounds(125, 121, 78, 16);
+		NewBudgetLabel.setBounds(289, 276, 78, 16);
 		contentPane.add(NewBudgetLabel);
 		
 		NewBudgetTextField = new JTextField();
-		NewBudgetTextField.setBounds(203, 116, 130, 26);
+		NewBudgetTextField.setBounds(369, 271, 157, 26);
 		contentPane.add(NewBudgetTextField);
 		NewBudgetTextField.setColumns(10);
 		
 		JButton confirmBtn = new JButton("Confirm");
-		confirmBtn.setBounds(157, 227, 117, 29);
+		confirmBtn.setBounds(369, 365, 117, 29);
 		contentPane.add(confirmBtn);
+		
+		JButton BackButton = new JButton("Back");
+		BackButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewModifyRestaurantBudgets VMRB = new ViewModifyRestaurantBudgets();
+				VMRB.setVisible(true);
+				dispose();
+			}
+		});
+		BackButton.setBounds(41, 414, 117, 29);
+		contentPane.add(BackButton);
 		confirmBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				

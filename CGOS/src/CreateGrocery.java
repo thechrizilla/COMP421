@@ -53,14 +53,14 @@ public class CreateGrocery extends JFrame {
                 }
             }
         });
-		setBounds(100, 100, 482, 329);
+		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Perishable?");
-		lblNewLabel.setBounds(65, 34, 78, 16);
+		JLabel lblNewLabel = new JLabel("Is the grocery perishable?");
+		lblNewLabel.setBounds(113, 34, 168, 16);
 		contentPane.add(lblNewLabel);
 		
 		
@@ -82,58 +82,58 @@ public class CreateGrocery extends JFrame {
 		//Radio Buttons for Perishable
 
 		
-		PerishableYes.setBounds(141, 30, 54, 23);
+		PerishableYes.setBounds(277, 30, 54, 23);
 		PerishableYes.setActionCommand("Yes");
 		contentPane.add(PerishableYes);
 	
 		
-		PerishableNo.setBounds(207, 30, 50, 23);
+		PerishableNo.setBounds(343, 30, 50, 23);
 		PerishableNo.setActionCommand("No");
 		contentPane.add(PerishableNo);
 		
 		
 		// Radio Buttons for Produce
 
-		ProduceYes.setBounds(330, 30, 54, 23);
+		ProduceYes.setBounds(602, 30, 54, 23);
 		ProduceYes.setActionCommand("Yes");
 		contentPane.add(ProduceYes);
 		
 
-		ProduceNo.setBounds(390, 30, 54, 23);
+		ProduceNo.setBounds(668, 30, 54, 23);
 		ProduceNo.setActionCommand("No");
 		contentPane.add(ProduceNo);
 		
 
 		
 		JLabel expiryDateLabel = new JLabel("Expiry Date (YYYY-MM-DD):");
-		expiryDateLabel.setBounds(17, 62, 178, 16);
+		expiryDateLabel.setBounds(180, 100, 178, 16);
 		contentPane.add(expiryDateLabel);
 		
 		JLabel storageTempLabel = new JLabel("Storage Temperature:");
-		storageTempLabel.setBounds(113, 90, 144, 16);
+		storageTempLabel.setBounds(224, 133, 144, 16);
 		contentPane.add(storageTempLabel);
 		
 		ExpiryDateTextField = new JTextField();
-		ExpiryDateTextField.setBounds(198, 57, 97, 26);
+		ExpiryDateTextField.setBounds(360, 95, 136, 26);
 		contentPane.add(ExpiryDateTextField);
 		ExpiryDateTextField.setColumns(10);
 		
 		StorageTemperatureTextField = new JTextField();
-		StorageTemperatureTextField.setBounds(248, 85, 109, 26);
+		StorageTemperatureTextField.setBounds(360, 128, 136, 26);
 		contentPane.add(StorageTemperatureTextField);
 		StorageTemperatureTextField.setColumns(10);
 		
-		JLabel produceLabel = new JLabel("Produce?");
-		produceLabel.setBounds(269, 34, 61, 16);
+		JLabel produceLabel = new JLabel("Is the grocery a produce?");
+		produceLabel.setBounds(440, 34, 168, 16);
 		contentPane.add(produceLabel);
 		
 		SeasonTextField = new JTextField();
-		SeasonTextField.setBounds(356, 57, 109, 26);
+		SeasonTextField.setBounds(360, 161, 136, 26);
 		contentPane.add(SeasonTextField);
 		SeasonTextField.setColumns(10);
 		
 		JLabel seasonLabel = new JLabel("Season:");
-		seasonLabel.setBounds(307, 62, 50, 16);
+		seasonLabel.setBounds(308, 166, 50, 16);
 		contentPane.add(seasonLabel);
 		
 		ProduceYes.addActionListener(new ActionListener() {
@@ -184,65 +184,61 @@ public class CreateGrocery extends JFrame {
 		});
 		
 		JLabel lblNewLabel_5 = new JLabel("Type:");
-		lblNewLabel_5.setBounds(63, 128, 34, 16);
+		lblNewLabel_5.setBounds(70, 221, 34, 16);
 		contentPane.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("Weight:");
-		lblNewLabel_6.setBounds(168, 128, 54, 16);
+		lblNewLabel_6.setBounds(314, 221, 54, 16);
 		contentPane.add(lblNewLabel_6);
 		
 		JLabel lblNewLabel_7 = new JLabel("Price:");
-		lblNewLabel_7.setBounds(296, 128, 34, 16);
+		lblNewLabel_7.setBounds(607, 221, 34, 16);
 		contentPane.add(lblNewLabel_7);
 		
 		TypeTextField = new JTextField();
-		TypeTextField.setBounds(98, 123, 69, 26);
+		TypeTextField.setBounds(102, 216, 136, 26);
 		contentPane.add(TypeTextField);
 		TypeTextField.setColumns(10);
 		
 		WeightTextField = new JTextField();
-		WeightTextField.setBounds(218, 123, 78, 26);
+		WeightTextField.setBounds(360, 216, 136, 26);
 		contentPane.add(WeightTextField);
 		WeightTextField.setColumns(10);
 		
 		PriceTextField = new JTextField();
-		PriceTextField.setBounds(330, 123, 78, 26);
+		PriceTextField.setBounds(640, 216, 136, 26);
 		contentPane.add(PriceTextField);
 		PriceTextField.setColumns(10);
 		
 		JLabel lblNewLabel_8 = new JLabel("Height:");
-		lblNewLabel_8.setBounds(43, 190, 61, 16);
+		lblNewLabel_8.setBounds(56, 313, 61, 16);
 		contentPane.add(lblNewLabel_8);
 		
 		JLabel lblNewLabel_9 = new JLabel("Width:");
-		lblNewLabel_9.setBounds(168, 190, 61, 16);
+		lblNewLabel_9.setBounds(320, 313, 61, 16);
 		contentPane.add(lblNewLabel_9);
 		
 		JLabel lblNewLabel_10 = new JLabel("Length:");
-		lblNewLabel_10.setBounds(286, 190, 61, 16);
+		lblNewLabel_10.setBounds(595, 313, 61, 16);
 		contentPane.add(lblNewLabel_10);
 		
 		HeightTextField = new JTextField();
-		HeightTextField.setBounds(89, 185, 78, 26);
+		HeightTextField.setBounds(102, 308, 136, 26);
 		contentPane.add(HeightTextField);
 		HeightTextField.setColumns(10);
 		
 		WidthTextField = new JTextField();
-		WidthTextField.setBounds(207, 185, 78, 26);
+		WidthTextField.setBounds(360, 308, 136, 26);
 		contentPane.add(WidthTextField);
 		WidthTextField.setColumns(10);
 		
 		LengthTextField = new JTextField();
-		LengthTextField.setBounds(330, 185, 78, 26);
+		LengthTextField.setBounds(640, 308, 136, 26);
 		contentPane.add(LengthTextField);
 		LengthTextField.setColumns(10);
 		
-		JLabel lblNewLabel_11 = new JLabel("Dimensions");
-		lblNewLabel_11.setBounds(178, 162, 89, 16);
-		contentPane.add(lblNewLabel_11);
-		
 		JButton EnterButton = new JButton("Enter");
-		EnterButton.setBounds(168, 243, 117, 29);
+		EnterButton.setBounds(362, 372, 117, 29);
 		contentPane.add(EnterButton);
 		
 		JButton BackButton = new JButton("Back");
@@ -260,8 +256,12 @@ public class CreateGrocery extends JFrame {
 
 			}
 		});
-		BackButton.setBounds(6, 272, 117, 29);
+		BackButton.setBounds(26, 420, 117, 29);
 		contentPane.add(BackButton);
+		
+		JLabel DimensionLabel = new JLabel("Dimensions");
+		DimensionLabel.setBounds(382, 280, 78, 16);
+		contentPane.add(DimensionLabel);
 		
 		
 		

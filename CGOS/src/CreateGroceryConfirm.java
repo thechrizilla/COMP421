@@ -21,28 +21,6 @@ import java.awt.event.ActionEvent;
 public class CreateGroceryConfirm extends JFrame {
 
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CreateGroceryConfirm frame = new CreateGroceryConfirm(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 * 
-	 * @param g
-	 * @throws SQLException
 	 */
 	public CreateGroceryConfirm(GroceryInstanceInfo g) throws SQLException {
 		this.addWindowListener(new WindowAdapter() {
@@ -63,7 +41,7 @@ public class CreateGroceryConfirm extends JFrame {
 				}
 			}
 		});
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -71,36 +49,47 @@ public class CreateGroceryConfirm extends JFrame {
 
 		JButton EnterButton = new JButton("Enter");
 		
-		EnterButton.setBounds(167, 223, 117, 29);
+		EnterButton.setBounds(361, 399, 117, 29);
 		contentPane.add(EnterButton);
 
 		JLabel lblNewLabel = new JLabel("Ship Name:");
-		lblNewLabel.setBounds(126, 74, 71, 16);
+		lblNewLabel.setBounds(292, 154, 71, 16);
 		contentPane.add(lblNewLabel);
 
 		JComboBox ShipNameComboBox = new JComboBox();
-		ShipNameComboBox.setBounds(196, 70, 117, 27);
+		ShipNameComboBox.setBounds(361, 150, 175, 27);
 		contentPane.add(ShipNameComboBox);
 
 		JLabel restaurantNameLabel = new JLabel("Restaurant Name:");
-		restaurantNameLabel.setBounds(96, 102, 101, 16);
+		restaurantNameLabel.setBounds(253, 182, 117, 16);
 		contentPane.add(restaurantNameLabel);
 
 		JComboBox RestaurantComboBox = new JComboBox();
-		RestaurantComboBox.setBounds(196, 98, 117, 27);
+		RestaurantComboBox.setBounds(361, 178, 175, 27);
 		contentPane.add(RestaurantComboBox);
 		RestaurantComboBox.setEnabled(false);
 		restaurantNameLabel.setEnabled(false);
 
 		JComboBox IngredientsComboBox = new JComboBox();
-		IngredientsComboBox.setBounds(196, 126, 117, 29);
+		IngredientsComboBox.setBounds(361, 209, 175, 29);
 		contentPane.add(IngredientsComboBox);
 
-		JLabel ingredientLabel = new JLabel("Ingredient:");
-		ingredientLabel.setBounds(126, 133, 71, 14);
+		JLabel ingredientLabel = new JLabel("Ingredient Name:");
+		ingredientLabel.setBounds(253, 215, 117, 14);
 		contentPane.add(ingredientLabel);
 		IngredientsComboBox.setEnabled(false);
 		ingredientLabel.setEnabled(false);
+		
+		JButton BackButton = new JButton("Back");
+		BackButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CreateGrocery CG = new CreateGrocery();
+				CG.setVisible(true);
+				dispose();
+			}
+		});
+		BackButton.setBounds(45, 414, 117, 29);
+		contentPane.add(BackButton);
 
 		ShipNameComboBox.addPopupMenuListener(new PopupMenuListener() {
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
