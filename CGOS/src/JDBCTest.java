@@ -557,7 +557,15 @@ class simpleJDBC {
 	}
 
 	public void DeleteIngredient(int orderid) throws SQLException {
-		System.out.println(orderid);
+		System.out.println("Deleting order " + orderid);
+		String getSQL = "SELECT grocerybarcode FROM grocery WHERE orderid=" + orderid + ";";
+		Statement stmt2 = simpleJDBC.getInstance().info.connection.createStatement();
+		ResultSet toDelete = stmt2.executeQuery(getSQL);
+		
+		while(toDelete.next()) {
+			DeleteGrocery(toDelete.getInt("grocerybarcode"));
+		}
+		
 		String delSQL = "DELETE FROM restaurant_orders WHERE orderid=" + orderid + ";";
 		info.statement.executeUpdate(delSQL);
 		System.out.println(delSQL);
@@ -614,8 +622,8 @@ class simpleJDBC {
 			simpleJDBC user = new simpleJDBC();
 
 			try {
-				TestCases(user);
-//				TestFunction(user);
+//				TestCases(user);
+				TestFunction(user);
 				user.DeleteTestVals();
 			} catch (IllegalArgumentException e) {
 				System.out.println("Error occurred.");
