@@ -69,7 +69,7 @@ public class MainMenu extends JFrame {
 		}
 		catch (SQLException e){
 			System.out.println("Caught exception");
-			JOptionPane.showMessageDialog(null, "There was a problem connecting to the database. Ensure your VPN or internet is working correctly.");
+			JOptionPane.showMessageDialog(null, "Program could not start.\nThere was a problem connecting to the database.\nEnsure your VPN or internet is working correctly.");
 			System.out.println("Displayed dialog?");
 //			dispose();
 			System.exit(1);

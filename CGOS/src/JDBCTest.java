@@ -467,11 +467,12 @@ class simpleJDBC {
 		}
 	}
 	
-	public ArrayList<String[]> GetPassengersWithDietaryRestriction(String restrictionType) throws SQLException {
+	public ArrayList<String[]> GetPassengersWithDietaryRestriction(String restrictionType, String shipName) throws SQLException {
 		try {
 			String querySQL = "SELECT * FROM passenger" + " WHERE passengerid IN"
 					+ " (SELECT passengerid FROM has_restriction_type" + " WHERE restrictiontype=\'" + restrictionType
-					+ "\');";
+					+ "\') AND passengerid IN"
+					+ " (SELECT passengerid FROM sailson WHERE shipname=\'" + shipName +"\');";
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println(querySQL);
 
@@ -622,9 +623,10 @@ class simpleJDBC {
 			simpleJDBC user = new simpleJDBC();
 
 			try {
+				AssignRandomRestrictions(user);
 //				TestCases(user);
-				TestFunction(user);
-				user.DeleteTestVals();
+//				TestFunction(user);
+//				user.DeleteTestVals();
 			} catch (IllegalArgumentException e) {
 				System.out.println("Error occurred.");
 			} catch (SQLException e) {
@@ -656,6 +658,31 @@ class simpleJDBC {
 		gro1.dimensions = "(10, 10, 10)";
 		gro1.orderID = String.valueOf(id);
 		user.CreateGrocery(gro1);
+	}
+	
+	public static void AssignRandomRestrictions(simpleJDBC user) throws SQLException {
+		String getSQL = "SELECT * FROM dietaryrestriction;";
+		ResultSet rs = user.info.statement.executeQuery(getSQL);
+		
+		ArrayList<String> resList = new ArrayList<String>();
+		while(rs.next()) {
+			resList.add(rs.getString(1));
+		}
+		
+		getSQL = "SELECT passengerid FROM passenger;";
+		rs = user.info.statement.executeQuery(getSQL);
+		ArrayList<Integer> pList = new ArrayList<Integer>();
+		while(rs.next()) {
+			pList.add(rs.getInt(1));
+		}
+		
+		for(int i = 0; i < 5; i++) {
+			int rIndex = (int) (Math.random() * resList.size());
+			int pIndex = (int) (Math.random() * pList.size());
+			String addSQL = "INSERT INTO has_restriction_type VALUES (\'"
+					+ resList.get(rIndex) + "\', " + String.valueOf(pList.get(pIndex)) +");";
+			user.info.statement.executeUpdate(addSQL);
+		}
 	}
 
 	public static void TestCases(simpleJDBC user) throws SQLException {

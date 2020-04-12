@@ -119,16 +119,16 @@ public class ViewPassengersWithRestrictions extends JFrame {
 				
 				try {
 					// passengerid, dob, firstname, lastname, gender, ethnicity
-					passengerInfos = simpleJDBC.getInstance().GetPassengersWithDietaryRestriction(restrictionType);
+					passengerInfos = simpleJDBC.getInstance().GetPassengersWithDietaryRestriction(restrictionType, shipName);
 					String[] toDisplay = new String[passengerInfos.size()-1];
 					for (int i = 1; i < passengerInfos.size(); ++i) {
 						String[] passenger = passengerInfos.get(i);
-						String row = "Passenger ID: " + passenger[0] + ", " + 
-						"Date Of Birth: " + passenger[1] + ", " + 
-						"First Name: " + passenger[2] + ", " + 
-						"Last Name: " + passenger[3] + ", " + 
-						"Gender: " + passenger[4] + ", " + 
-						"Ethinicity: " + passenger[5];
+						String row = passenger[0] + " - "
+						+ passenger[1] + " - " 
+						+ "\"" + passenger[3] + " " 
+						+ passenger[2] + "\" - "
+						+ passenger[4] + " - " 
+						+ passenger[5];
 						toDisplay[i-1] = row;
 					}
 					
