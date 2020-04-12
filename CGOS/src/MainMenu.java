@@ -41,7 +41,6 @@ public class MainMenu extends JFrame {
 	 */
 	public MainMenu() throws SQLException {
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		simpleJDBC.getInstance();
 		this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent evt){
                 int x = JOptionPane.showConfirmDialog(null, 
@@ -61,6 +60,14 @@ public class MainMenu extends JFrame {
                 }
             }
         });
+		
+		try {
+			simpleJDBC.getInstance();
+		}
+		catch (SQLException e){
+			JOptionPane.showMessageDialog(null, "There was a problem connecting to the database. Ensure your VPN or internet is working correctly.");
+			return;
+		}
 		
 		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
