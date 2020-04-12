@@ -355,9 +355,9 @@ class simpleJDBC {
 					+ "\' AND restaurant_name=\'" + restaurant.restaurantName + "\';";
 			System.out.println(querySQL);
 			ResultSet rs = info.statement.executeQuery(querySQL);
-			System.out.println("Fetched ingredients for " + restaurant.shipname + ", " + restaurant.restaurantName);
+			System.out.println("Fetched orders for " + restaurant.shipname + ", " + restaurant.restaurantName);
 
-			return GetArrayListFromResultSet(rs);
+			return Get2DArrayListFromResultSet(rs);
 
 		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
@@ -377,7 +377,7 @@ class simpleJDBC {
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched budgets for " + shipName);
 
-			return GetArrayListFromResultSet(rs);
+			return Get2DArrayListFromResultSet(rs);
 
 		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
@@ -396,12 +396,7 @@ class simpleJDBC {
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched all ships");
 
-			ArrayList<String> list = new ArrayList<String>();
-			while (rs.next()) {
-				list.add(rs.getString(1));
-			}
-
-			return list;
+			return GetArrayListFromResultSet(rs);
 
 		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
@@ -439,6 +434,30 @@ class simpleJDBC {
 		return null;
 	}
 
+	public ArrayList<String> GetListOfDietaryRestrictions(String shipName){
+		try {
+			String querySQL = "SELECT * FROM dietaryrestriction "
+					+ " WHERE restrictiontype IN" 
+					+ " (SELECT restrictiontype FROM has_restriction_type"
+					+ " WHERE passengerid IN"
+					+ " (SELECT passengerid FROM sailson"
+					+ " WHERE shipname=\'" + shipName + "\'));";
+			System.out.println(querySQL);
+			ResultSet rs = info.statement.executeQuery(querySQL);
+			System.out.println("Fetched restrictions for " + shipName);
+
+			return GetArrayListFromResultSet(rs);
+
+		} catch (SQLException e) {
+			info.sqlCode = e.getErrorCode(); // Get SQLCODE
+			info.sqlState = e.getSQLState(); // Get SQLSTATE
+			System.out.println("Error getting restaurant budget info");
+			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
+		}
+
+		return null;
+	}
+	
 	public ArrayList<String[]> GetPassengersWithDietaryRestriction(String restrictionType) {
 		try {
 			String querySQL = "SELECT * FROM passenger" + " WHERE passengerid IN"
@@ -447,7 +466,7 @@ class simpleJDBC {
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println(querySQL);
 
-			return GetArrayListFromResultSet(rs);
+			return Get2DArrayListFromResultSet(rs);
 
 		} catch (SQLException e) {
 			info.sqlCode = e.getErrorCode(); // Get SQLCODE
@@ -459,7 +478,7 @@ class simpleJDBC {
 		return null;
 	}
 
-	public ArrayList<String[]> GetArrayListFromResultSet(ResultSet rs) throws SQLException {
+	public ArrayList<String[]> Get2DArrayListFromResultSet(ResultSet rs) throws SQLException {
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int numCols = rsmd.getColumnCount();
 
@@ -481,6 +500,15 @@ class simpleJDBC {
 			list.add(row);
 		}
 
+		return list;
+	}
+	
+	public ArrayList<String> GetArrayListFromResultSet(ResultSet rs) throws SQLException{
+		ArrayList<String> list = new ArrayList<String>();
+		while (rs.next()) {
+			list.add(String.valueOf(rs.getObject(1)));
+		}
+		
 		return list;
 	}
 
@@ -671,16 +699,19 @@ class simpleJDBC {
 		// Uncomment this to delete all Test values
 		user.DeleteTestVals();
 
+		System.out.println();
 		ArrayList<String> shipNames = user.GetShipNames();
 		System.out.println("\nAll ship names:");
 		System.out.println(Arrays.toString(shipNames.toArray()));
 
+		System.out.println();
 		ArrayList<String> restaurantNames = user.GetRestaurants(shipNames.get(0));
 		System.out.println("\nAll restauraunts from " + shipNames.get(0));
 		System.out.println(Arrays.toString(restaurantNames.toArray()));
 
+		System.out.println();
 		ArrayList<String[]> budgetInfo = user.GetBudgetInfo(shipNames.get(0));
-		System.out.println("\nBudget info for Ship " + shipNames.get(0));
+		System.out.println("Budget info for Ship " + shipNames.get(0));
 		for (int i = 0; i < budgetInfo.size(); ++i) {
 			for (int j = 0; j < budgetInfo.get(0).length; ++j) {
 				System.out.print(budgetInfo.get(i)[j] + "\t");
@@ -688,16 +719,22 @@ class simpleJDBC {
 			System.out.println();
 		}
 
+		System.out.println();
 		RestaurantInfo r1 = new RestaurantInfo();
 		r1.shipname = "Titanic";
 		r1.restaurantName = "Pizza Pizza";
 		ArrayList<String[]> restaurantOrders = user.GetRestaurantOrders(r1);
-		System.out.println("\nOrders for " + r1.shipname + ", " + r1.restaurantName);
+		System.out.println("Orders for " + r1.shipname + ", " + r1.restaurantName);
 		for (int i = 0; i < restaurantOrders.size(); ++i) {
 			for (int j = 0; j < restaurantOrders.get(0).length; ++j) {
 				System.out.print(restaurantOrders.get(i)[j] + "\t");
 			}
 			System.out.println();
 		}
+		
+		System.out.println();
+		ArrayList<String> restrictionListTitanic = user.GetListOfDietaryRestrictions("Titanic");
+		System.out.println("All restrictions from " + "Titanic");
+		System.out.println(Arrays.toString(restrictionListTitanic.toArray()));
 	}
 }
