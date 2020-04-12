@@ -92,6 +92,7 @@ public class ModifyRestaurantBudgets extends JFrame {
 		});
 		BackButton.setBounds(41, 414, 117, 29);
 		contentPane.add(BackButton);
+		
 		confirmBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -102,7 +103,16 @@ public class ModifyRestaurantBudgets extends JFrame {
 				newInfo.shipname = shipName;
 				
 				try {
-					Float.parseFloat(newInfo.newBudget);
+					float f = Float.parseFloat(newInfo.newBudget);
+					String currentValue = budgetValues;
+					
+					currentValue = currentValue.substring(currentValue.indexOf("$") + 1);
+					currentValue = currentValue.substring(0, currentValue.indexOf("/"));
+					
+					if (f < Float.parseFloat(currentValue)) {
+						JOptionPane.showMessageDialog(null, "New budget cannot be less than " + currentValue + "!");
+						return;	
+					}
 				}
 				catch(NumberFormatException e2){
 					JOptionPane.showMessageDialog(null, "Budget must be a number!");

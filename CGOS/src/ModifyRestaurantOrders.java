@@ -91,9 +91,13 @@ public class ModifyRestaurantOrders extends JFrame {
 				updateInfo.orderid = orderid;
 				updateInfo.type = typeInput.getText();
 				updateInfo.weight = weightInput.getText();
-				
+						
 				try {
-					Float.parseFloat(updateInfo.weight);
+					float f = Float.parseFloat(updateInfo.weight);
+					if (f < Float.parseFloat(totalWeight)) {
+						JOptionPane.showMessageDialog(null, "Modified weight cannot be less than " + totalWeight + "!");
+						return;
+					}
 				}
 				catch(NumberFormatException e2){
 					JOptionPane.showMessageDialog(null, "Weight must be a number!");

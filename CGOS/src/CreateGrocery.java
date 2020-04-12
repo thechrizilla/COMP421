@@ -16,13 +16,13 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
+import javax.swing.JComboBox;
 
 public class CreateGrocery extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField ExpiryDateTextField;
 	private JTextField StorageTemperatureTextField;
-	private JTextField SeasonTextField;
 	private JTextField TypeTextField;
 	private JTextField WeightTextField;
 	private JTextField PriceTextField;
@@ -106,7 +106,7 @@ public class CreateGrocery extends JFrame {
 
 		
 		JLabel expiryDateLabel = new JLabel("Expiry Date (YYYY-MM-DD):");
-		expiryDateLabel.setBounds(180, 100, 178, 16);
+		expiryDateLabel.setBounds(203, 100, 154, 16);
 		contentPane.add(expiryDateLabel);
 		
 		JLabel storageTempLabel = new JLabel("Storage Temperature:");
@@ -127,26 +127,26 @@ public class CreateGrocery extends JFrame {
 		produceLabel.setBounds(440, 34, 168, 16);
 		contentPane.add(produceLabel);
 		
-		SeasonTextField = new JTextField();
-		SeasonTextField.setBounds(360, 161, 136, 26);
-		contentPane.add(SeasonTextField);
-		SeasonTextField.setColumns(10);
-		
 		JLabel seasonLabel = new JLabel("Season:");
 		seasonLabel.setBounds(308, 166, 50, 16);
 		contentPane.add(seasonLabel);
 		
+		JComboBox SeasonComboBox = new JComboBox(new String[] {"Winter", "Spring", "Summer", "Autumn"});
+		SeasonComboBox.setBounds(360, 165, 136, 26);
+		contentPane.add(SeasonComboBox);
+		SeasonComboBox.setSelectedIndex(-1);
+		
 		ProduceYes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				seasonLabel.setEnabled(true);
-				SeasonTextField.setEnabled(true);
+				SeasonComboBox.setEnabled(true);
 			}
 		});
 		
 		ProduceNo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				seasonLabel.setEnabled(false);
-				SeasonTextField.setEnabled(false);
+				SeasonComboBox.setEnabled(false);
 			}
 		});
 		
@@ -158,8 +158,7 @@ public class CreateGrocery extends JFrame {
 				ProduceNo.setEnabled(false);
 				produceLabel.setEnabled(false);
 				seasonLabel.setEnabled(false);
-				SeasonTextField.setEnabled(false);
-				SeasonTextField.setText("");
+				SeasonComboBox.setEnabled(false);
 				expiryDateLabel.setEnabled(false);
 				ExpiryDateTextField.setEnabled(false);
 				ExpiryDateTextField.setText("");
@@ -175,7 +174,7 @@ public class CreateGrocery extends JFrame {
 				ProduceNo.setEnabled(true);
 				produceLabel.setEnabled(true);
 				seasonLabel.setEnabled(true);
-				SeasonTextField.setEnabled(true);
+				SeasonComboBox.setEnabled(true);
 				expiryDateLabel.setEnabled(true);
 				ExpiryDateTextField.setEnabled(true);
 				storageTempLabel.setEnabled(true);
@@ -264,16 +263,15 @@ public class CreateGrocery extends JFrame {
 		contentPane.add(DimensionLabel);
 		
 		
-		
 		EnterButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GroceryInstanceInfo g = new GroceryInstanceInfo();
 				
-				if(PerishableGroup.getSelection() == null) {
+				if (PerishableGroup.getSelection() == null) {
 					JOptionPane.showMessageDialog(null, "Select \"Yes\" or \"No\" for Perishable");
 					return;
 				}
-				if(ProduceGroup.getSelection() == null && PerishableGroup.getSelection().getActionCommand().equals("Yes")) {
+				if (ProduceGroup.getSelection() == null && PerishableGroup.getSelection().getActionCommand().equals("Yes")) {
 					JOptionPane.showMessageDialog(null, "Select \"Yes\" or \"No\" for Produce");
 					return;
 				}
@@ -286,9 +284,29 @@ public class CreateGrocery extends JFrame {
 					
 					if (ProduceGroup.getSelection().getActionCommand().equals("Yes")) {
 						g.isProduce = true;
+						if (SeasonComboBox.getSelectedIndex() == -1) {
+							JOptionPane.showMessageDialog(null, "Select a season!");
+							return;
+						}
+						g.pr_season = SeasonComboBox.getSelectedItem().toString();
 					}
 					else {
 						g.isProduce = false;
+					}
+					
+					if(!ExpiryDateTextField.getText().matches("^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")) {
+						JOptionPane.showMessageDialog(null, "Date has to respect this format: YYYY-MM-DD");
+						return;
+					}
+					try {
+						if (Float.parseFloat(StorageTemperatureTextField.getText()) < 0) {
+							JOptionPane.showMessageDialog(null, "Temperature cannot be negative!");
+							return;	
+						}
+					}
+					catch(NumberFormatException e2){
+						JOptionPane.showMessageDialog(null, "Temperature has to be a number!");
+						return;
 					}
 				}
 				else if(PerishableGroup.getSelection().getActionCommand().equals("No")) {
@@ -298,11 +316,13 @@ public class CreateGrocery extends JFrame {
 					ProduceYes.setEnabled(false);
 				}
 
-
+				if (TypeTextField.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Enter a type!");
+					return;	
+				}
 				
 				g.pe_storageTemp = StorageTemperatureTextField.getText();
 				g.type = TypeTextField.getText();
-				g.pr_season = SeasonTextField.getText();
 				g.price = PriceTextField.getText();
 				g.pe_expiryDate = ExpiryDateTextField.getText();
 				g.weight = WeightTextField.getText();
@@ -312,48 +332,58 @@ public class CreateGrocery extends JFrame {
 						LengthTextField.getText() +
 						")";
 				
-				if(!ExpiryDateTextField.getText().matches("^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")) {
-					JOptionPane.showMessageDialog(null, "Date has to respest this format: YYYY-MM-DD");
+				try {
+					if (Float.parseFloat(WeightTextField.getText()) < 0) {
+						JOptionPane.showMessageDialog(null, "Weight cannot be negative!");
+						return;	
+					}
+				}
+				catch(NumberFormatException e2){
+					JOptionPane.showMessageDialog(null, "Weight has to be a number!");
 					return;
 				}
-
-				try {
-					Integer.parseInt(g.weight);
-				}
-				catch(NumberFormatException e2){
-					JOptionPane.showMessageDialog(null, "Weight has to be an integer!");
-					return;
-				}
 				
 				try {
-					Integer.parseInt(g.price);
+					if (Float.parseFloat(PriceTextField.getText()) < 0) {
+						JOptionPane.showMessageDialog(null, "Price cannot be negative!");
+						return;	
+					}
 				}
 				catch(NumberFormatException e2){
-					JOptionPane.showMessageDialog(null, "Price has to be an integer!");
+					JOptionPane.showMessageDialog(null, "Price has to be a number!");
 					return;	
 				}
 				
 				try {
-					Integer.parseInt(HeightTextField.getText());
+					if (Float.parseFloat(HeightTextField.getText()) < 0) {
+						JOptionPane.showMessageDialog(null, "Height cannot be negative!");
+						return;	
+					}
 				}
 				catch(NumberFormatException e2){
-					JOptionPane.showMessageDialog(null, "Height has to be an integer!");
+					JOptionPane.showMessageDialog(null, "Height has to be a number!");
 					return;	
 				}
 				
 				try {
-					Integer.parseInt(WidthTextField.getText());
+					if (Float.parseFloat(WidthTextField.getText()) < 0) {
+						JOptionPane.showMessageDialog(null, "Width cannot be negative!");
+						return;	
+					}
 				}
 				catch(NumberFormatException e2){
-					JOptionPane.showMessageDialog(null, "Width has to be an integer!");
+					JOptionPane.showMessageDialog(null, "Width has to be a number!");
 					return;	
 				}
 				
 				try {
-					Integer.parseInt(LengthTextField.getText());
+					if (Float.parseFloat(LengthTextField.getText()) < 0) {
+						JOptionPane.showMessageDialog(null, "Length cannot be negative!");
+						return;	
+					}
 				}
 				catch(NumberFormatException e2){
-					JOptionPane.showMessageDialog(null, "Length has to be an integer!");
+					JOptionPane.showMessageDialog(null, "Length has to be a number!");
 					return;	
 				}
 				

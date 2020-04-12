@@ -116,6 +116,33 @@ public class OrderNewIngredient extends JFrame {
 		JButton OrderButton = new JButton("Order");
 		OrderButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (ShipNameComboBox.getSelectedIndex() == -1) {
+					JOptionPane.showMessageDialog(null, "Select a ship name!");
+					return;	
+				}
+				
+				if (RestaurantComboBox.getSelectedIndex() == -1) {
+					JOptionPane.showMessageDialog(null, "Select a restaurant name!");
+					return;	
+				}
+				
+				if (IngredientTypeTextField.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Enter an ingredient type!");
+					return;	
+				}
+				
+				try {
+					if (Float.parseFloat(WeightTextField.getText()) < 0) {
+						JOptionPane.showMessageDialog(null, "Weight cannot be negative!");
+						return;	
+					}
+				}
+				catch(NumberFormatException e1){
+					JOptionPane.showMessageDialog(null, "Weight has to be a number!");
+					return;
+				}
+				
+				
 				IngredientInfo ing = new IngredientInfo();
 				ing.shipName = ShipNameComboBox.getSelectedItem().toString();
 				ing.type = IngredientTypeTextField.getText();
@@ -131,6 +158,7 @@ public class OrderNewIngredient extends JFrame {
 				}
 				
 				ing.roomNo = roomNo.reverse().toString();
+				
 				
 				try {
 					simpleJDBC.getInstance().CreateIngredient(ing);

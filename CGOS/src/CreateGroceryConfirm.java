@@ -205,8 +205,8 @@ public class CreateGroceryConfirm extends JFrame {
 				try {
 					simpleJDBC.getInstance().CreateGrocery(g);
 				} catch (IllegalArgumentException | SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Restaurant does not have enough budget for this grocery!");
+					return;	
 				}
 			}
 		});
