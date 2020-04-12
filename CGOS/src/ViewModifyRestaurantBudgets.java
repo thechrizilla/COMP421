@@ -133,6 +133,12 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 		SelectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = list_restaurants.getSelectedIndex();
+				
+				if(index == -1) {
+					JOptionPane.showMessageDialog(null, "Please select a restaurant.");
+					return;	
+				}
+				
 				String[] selectedRestaurant = budgetInfos.get(index+1);
 				System.out.println("Selected index: " + index);
 				
