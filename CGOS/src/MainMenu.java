@@ -76,7 +76,7 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		CreateGroceryButton.setBounds(366, 255, 117, 29);
+		CreateGroceryButton.setBounds(336, 211, 171, 29);
 		contentPane.add(CreateGroceryButton);
 		
 		JButton OrderNewIngredientButton = new JButton("Order New Ingredient");
@@ -93,7 +93,7 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		OrderNewIngredientButton.setBounds(338, 214, 171, 29);
+		OrderNewIngredientButton.setBounds(336, 170, 171, 29);
 		contentPane.add(OrderNewIngredientButton);
 		
 		JButton ViewModifyBudgets = new JButton("View/Modify Restaurant Budgets");
@@ -110,7 +110,7 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		ViewModifyBudgets.setBounds(302, 296, 240, 29);
+		ViewModifyBudgets.setBounds(300, 252, 240, 29);
 		contentPane.add(ViewModifyBudgets);
 		
 		JButton AutoAdjustBudgets = new JButton("View/Modify Restaurant Orders");
@@ -127,7 +127,7 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		AutoAdjustBudgets.setBounds(302, 337, 240, 29);
+		AutoAdjustBudgets.setBounds(300, 293, 240, 29);
 		contentPane.add(AutoAdjustBudgets);
 		
 		JButton ViewModifyRestaurantOrdersButton = new JButton("View Passengers With Dietary Restrictions");
@@ -144,16 +144,16 @@ public class MainMenu extends JFrame {
 				dispose();
 			}
 		});
-		ViewModifyRestaurantOrdersButton.setBounds(276, 378, 296, 29);
+		ViewModifyRestaurantOrdersButton.setBounds(274, 334, 296, 29);
 		contentPane.add(ViewModifyRestaurantOrdersButton);
 		
 		JButton QuitButton = new JButton("Quit");
-		QuitButton.setBounds(366, 419, 117, 29);
+		QuitButton.setBounds(364, 375, 117, 29);
 		contentPane.add(QuitButton);
 		
 		JLabel lblNewLabel = new JLabel("<html><div style='text-align: center;'>WELCOME to the CGOS Application! <br/> Please select one of the options below! <br/> If you want to quit the application, simply click the \"Quit\" button.</html>");
 		lblNewLabel.setFont(new Font(".AppleSystemUIFont", Font.PLAIN, 15));
-		lblNewLabel.setBounds(213, 41, 459, 91);
+		lblNewLabel.setBounds(197, 41, 459, 91);
 		lblNewLabel.setHorizontalAlignment(JLabel.CENTER);
 		lblNewLabel.setVerticalAlignment(JLabel.CENTER);
 		contentPane.add(lblNewLabel);
