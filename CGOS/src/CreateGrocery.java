@@ -360,7 +360,7 @@ public class CreateGrocery extends JFrame {
 				
 				CreateGroceryConfirm CGC;
 				try {
-					CGC = new CreateGroceryConfirm();
+					CGC = new CreateGroceryConfirm(g);
 					CGC.setVisible(true);
 
 				} catch (SQLException e2) {
@@ -368,26 +368,6 @@ public class CreateGrocery extends JFrame {
 					e2.printStackTrace();
 				}
 				setVisible(false);
-				
-				try {
-					
-					IngredientInfo ing1 = new IngredientInfo();
-					ing1.shipName = "Titanic";
-					ing1.roomNo = "212";
-					ing1.type = "Test";
-					ing1.weight = "100";
-					int id = simpleJDBC.getInstance().CreateIngredient(ing1);
-					g.orderID = String.valueOf(id);
-					simpleJDBC.getInstance().CreateGrocery(g);
-					
-					System.out.println("Grocery created????");
-				} catch (SQLException e1) {
-					System.out.println("Couldnt add");
-					// TODO Auto-generated catch block
-					
-					e1.printStackTrace();
-				}
-
 			}
 		});
 	}
