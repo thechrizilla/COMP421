@@ -103,6 +103,8 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 		ShipNameComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					model.clear();
+					
 					Object o = ShipNameComboBox.getSelectedItem();
 					if (o == null) return;
 					selectedShip = o.toString();

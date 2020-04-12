@@ -72,10 +72,10 @@ public class ModifyRestaurantBudgets extends JFrame {
 		contentPane.add(NewBudgetTextField);
 		NewBudgetTextField.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Confirm");
-		btnNewButton.setBounds(157, 227, 117, 29);
-		contentPane.add(btnNewButton);
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton confirmBtn = new JButton("Confirm");
+		confirmBtn.setBounds(157, 227, 117, 29);
+		contentPane.add(confirmBtn);
+		confirmBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				// Finish here
@@ -97,7 +97,9 @@ public class ModifyRestaurantBudgets extends JFrame {
 				} catch (SQLException e1) {
 					System.out.println("Error updating budget info for " + rName + ", " + rNo);
 					e1.printStackTrace();
+					return;
 				}
+				
 				System.out.println("Success");
 				
 //				int index = list_restaurants.getSelectedIndex();

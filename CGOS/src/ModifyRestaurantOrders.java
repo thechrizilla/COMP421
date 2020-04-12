@@ -5,47 +5,120 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class ModifyRestaurantOrders extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField TypeTextField;
-	private JTextField WeightTextField;
+	private JTextField typeInput;
+	private JTextField weightInput;
 
-	public ModifyRestaurantOrders() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public ModifyRestaurantOrders(String[] orderInfo) {
+		// orderid, shipname, rname, rno, type, numgro, orderweight, totalweight
+		String orderid = orderInfo[0];
+		String type = orderInfo[4];
+		String curWeight = orderInfo[6];
+		String totalWeight = orderInfo[7];
+		
+		this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent evt){
+                int x = JOptionPane.showConfirmDialog(null, 
+                    "Are you sure you want to quit?", "Confirmation",
+                    JOptionPane.YES_NO_OPTION);
+
+                if (x == JOptionPane.YES_OPTION) {
+                	try {
+						simpleJDBC.getInstance().Close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                }else{
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel NewTypeLabel = new JLabel("Type:");
-		NewTypeLabel.setBounds(159, 95, 34, 16);
-		contentPane.add(NewTypeLabel);
+		JLabel orderLabel = new JLabel("Order ID: " + orderid);
+		orderLabel.setBounds(159, 60, 200, 16);
+		contentPane.add(orderLabel);
 		
-		TypeTextField = new JTextField();
-		TypeTextField.setBounds(193, 90, 130, 26);
-		contentPane.add(TypeTextField);
-		TypeTextField.setColumns(10);
+		JLabel typeLabel = new JLabel("Type:");
+		typeLabel.setBounds(159, 95, 34, 16);
+		contentPane.add(typeLabel);
 		
-		JLabel NewWeightLabel = new JLabel("Weight:");
-		NewWeightLabel.setBounds(146, 123, 47, 16);
-		contentPane.add(NewWeightLabel);
+		typeInput = new JTextField();
+		typeInput.setBounds(193, 90, 130, 26);
+		contentPane.add(typeInput);
+		typeInput.setColumns(10);
+		typeInput.setText(type);
 		
-		WeightTextField = new JTextField();
-		WeightTextField.setBounds(193, 118, 130, 26);
-		contentPane.add(WeightTextField);
-		WeightTextField.setColumns(10);
+		JLabel weightLabel = new JLabel("Weight:");
+		weightLabel.setBounds(146, 123, 47, 16);
+		contentPane.add(weightLabel);
 		
-		JButton ConfirmButton = new JButton("Confirm");
-		ConfirmButton.setBounds(159, 232, 117, 29);
-		contentPane.add(ConfirmButton);
+		JLabel totalWeightLabel = new JLabel("Total Weight: " + totalWeight);
+		totalWeightLabel.setBounds(146, 146, 200, 16);
+		contentPane.add(totalWeightLabel);
+		
+		weightInput = new JTextField();
+		weightInput.setBounds(193, 118, 130, 26);
+		contentPane.add(weightInput);
+		weightInput.setColumns(10);
+		weightInput.setText(curWeight);
+		
+		JButton confirmBtn = new JButton("Confirm");
+		confirmBtn.setBounds(159, 232, 117, 29);
+		contentPane.add(confirmBtn);
+		confirmBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				// Finish here
+				IngredientUpdateInfo updateInfo = new IngredientUpdateInfo();
+				updateInfo.orderid = orderid;
+				updateInfo.type = typeInput.getText();
+				updateInfo.weight = weightInput.getText();
+				
+				try {
+					Float.parseFloat(updateInfo.weight);
+				}
+				catch(NumberFormatException e2){
+					JOptionPane.showMessageDialog(null, "Weight must be a number!");
+					return;	
+				}
+				
+				try {
+					simpleJDBC.getInstance().UpdateIngredient(updateInfo);
+				} catch (SQLException e1) {
+					System.out.println("Error updating ingredient info for " + orderid);
+					e1.printStackTrace();
+					return;
+				}
+				
+				System.out.println("Success");
+				
+//				int index = list_restaurants.getSelectedIndex();
+//				String[] selectedRestaurant = budgetInfos.get(index);
+//				System.out.println("Selected index: " + index);
+//				
+//				ModifyRestaurantBudgets modifyBudgetPopup = new ModifyRestaurantBudgets(selectedRestaurant, selectedShip);
+//				modifyBudgetPopup.setVisible(true);
+//				dispose();
+			}
+		});
 		
 		JButton BackButton = new JButton("Back");
 		BackButton.addActionListener(new ActionListener() {
