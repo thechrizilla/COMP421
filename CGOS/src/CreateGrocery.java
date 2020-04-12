@@ -358,8 +358,15 @@ public class CreateGrocery extends JFrame {
 				}
 				
 				
-				CreateGroceryConfirm CGC = new CreateGroceryConfirm();
-				CGC.setVisible(true);
+				CreateGroceryConfirm CGC;
+				try {
+					CGC = new CreateGroceryConfirm();
+					CGC.setVisible(true);
+
+				} catch (SQLException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 				setVisible(false);
 				
 				try {

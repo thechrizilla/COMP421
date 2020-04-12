@@ -4,10 +4,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -66,7 +69,7 @@ public class OrderNewIngredient extends JFrame {
 		lblNewLabel_3.setBounds(153, 150, 47, 16);
 		contentPane.add(lblNewLabel_3);
 		
-		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
+		JComboBox ShipNameComboBox = new JComboBox();
 		ShipNameComboBox.setBounds(212, 62, 130, 27);
 		contentPane.add(ShipNameComboBox);
 
@@ -76,11 +79,34 @@ public class OrderNewIngredient extends JFrame {
 		RestaurantComboBox.setEnabled(false);
 		restaurantNameLabel.setEnabled(false);
 		
+		ShipNameComboBox.addPopupMenuListener(new PopupMenuListener()
+		{
+		    public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+		    {
+		    	 ShipNameComboBox.removeAllItems();
+
+				try {
+					for (Object item : simpleJDBC.getInstance().GetShipNames()) {
+						ShipNameComboBox.addItem(item);
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		    }
+
+		    public void popupMenuCanceled(PopupMenuEvent e) {}
+		    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+		});
+		
 		ShipNameComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					ArrayList<String> restaurants = simpleJDBC.getInstance().GetRestaurants(ShipNameComboBox.getSelectedItem().toString());
+					Object o = ShipNameComboBox.getSelectedItem();
+					if (o == null) return;
+					ArrayList<String> restaurants = simpleJDBC.getInstance().GetRestaurants(o.toString());
 					RestaurantComboBox.removeAllItems();
+					
 					for (String r : restaurants) {
 						RestaurantComboBox.addItem(r);
 					}

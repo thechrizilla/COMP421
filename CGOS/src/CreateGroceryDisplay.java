@@ -7,11 +7,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Color;
+import javax.swing.JScrollPane;
 
 public class CreateGroceryDisplay extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -40,28 +40,13 @@ public class CreateGroceryDisplay extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		table_1 = new JTable();
-		table_1.setForeground(Color.BLACK);
-		table_1.setToolTipText("sss");
-		table_1.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"sstrj g", new Integer(2), new Float(3.0f)},
-				{"string2", new Integer(2), null},
-				{"sstring4", new Integer(5), new Float(3.0f)},
-			},
-			new String[] {
-				"New column", "New column2", "New column"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Float.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		table_1.setBounds(10, 0, 811, 441);
-		contentPane.add(table_1);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(478, 0, 2, 2);
+		contentPane.add(scrollPane);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(276, 256, -244, -156);
+		contentPane.add(scrollPane_1);
+		
 	}
-
 }
