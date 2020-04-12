@@ -351,12 +351,12 @@ class simpleJDBC {
 	// This function needs restaurant.shipName and restaurant.restaurantName
 	public ArrayList<String[]> GetRestaurantOrders(RestaurantInfo restaurant) {
 		try {
-			String querySQL = "SELECT * FROM ingredients_info" + " WHERE shipname=\'" + restaurant.shipname
+			String querySQL = "SELECT * FROM orders_info" + " WHERE shipname=\'" + restaurant.shipname
 					+ "\' AND restaurant_name=\'" + restaurant.restaurantName + "\';";
 			System.out.println(querySQL);
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched ingredients for " + restaurant.shipname + ", " + restaurant.restaurantName);
-			
+
 			return GetArrayListFromResultSet(rs);
 
 		} catch (SQLException e) {
@@ -376,7 +376,7 @@ class simpleJDBC {
 			System.out.println(querySQL);
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println("Fetched budgets for " + shipName);
-			
+
 			return GetArrayListFromResultSet(rs);
 
 		} catch (SQLException e) {
@@ -439,15 +439,14 @@ class simpleJDBC {
 		return null;
 	}
 
-	public ArrayList<String[]> GetPassengersWithDietaryRestriction(String restrictionType){
+	public ArrayList<String[]> GetPassengersWithDietaryRestriction(String restrictionType) {
 		try {
-			String querySQL = "SELECT * FROM passenger"
-					+ " WHERE passengerid IN"
-					+ " (SELECT passengerid FROM has_restriction_type"
-					+ " WHERE restrictiontype=\'" + restrictionType + "\');";
+			String querySQL = "SELECT * FROM passenger" + " WHERE passengerid IN"
+					+ " (SELECT passengerid FROM has_restriction_type" + " WHERE restrictiontype=\'" + restrictionType
+					+ "\');";
 			ResultSet rs = info.statement.executeQuery(querySQL);
 			System.out.println(querySQL);
-			
+
 			return GetArrayListFromResultSet(rs);
 
 		} catch (SQLException e) {
@@ -456,35 +455,35 @@ class simpleJDBC {
 			System.out.println("Error getting passengers with dietary restriction " + restrictionType);
 			System.out.println("Code: " + info.sqlCode + "  sqlState: " + info.sqlState);
 		}
-		
+
 		return null;
 	}
-	
-	public ArrayList<String[]> GetArrayListFromResultSet(ResultSet rs) throws SQLException{
+
+	public ArrayList<String[]> GetArrayListFromResultSet(ResultSet rs) throws SQLException {
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int numCols = rsmd.getColumnCount();
 
 		ArrayList<String[]> list = new ArrayList<String[]>();
-		
+
 		// Add column headers
 		String[] row = new String[numCols];
 		for (int i = 0; i < numCols; ++i) {
-			row[i] = rsmd.getColumnName(i+1);
+			row[i] = rsmd.getColumnName(i + 1);
 		}
 		list.add(row);
-		
+
 		// Add each row
 		while (rs.next()) {
 			row = new String[numCols];
 			for (int i = 0; i < numCols; ++i) {
-				row[i] = String.valueOf(rs.getObject(i+1));
+				row[i] = String.valueOf(rs.getObject(i + 1));
 			}
 			list.add(row);
 		}
-		
+
 		return list;
 	}
-	
+
 	public void UpdateUsedBudgets() throws SQLException {
 		try {
 			String querySQL = "SELECT update_usedBudgets();";
@@ -518,7 +517,7 @@ class simpleJDBC {
 		delSQL = "DELETE FROM grocery WHERE grocerybarcode=" + barcode + ";";
 		info.statement.executeUpdate(delSQL);
 		System.out.println(delSQL);
-		
+
 		UpdateUsedBudgets();
 	}
 
@@ -580,7 +579,7 @@ class simpleJDBC {
 			simpleJDBC user = new simpleJDBC();
 
 			try {
- 				TestCases(user);
+				TestCases(user);
 //				TestFunction(user);
 				user.DeleteTestVals();
 			} catch (IllegalArgumentException e) {
@@ -684,7 +683,7 @@ class simpleJDBC {
 		System.out.println("\nBudget info for Ship " + shipNames.get(0));
 		for (int i = 0; i < budgetInfo.size(); ++i) {
 			for (int j = 0; j < budgetInfo.get(0).length; ++j) {
-				System.out.print(budgetInfo.get(i)[j]);
+				System.out.print(budgetInfo.get(i)[j] + " ");
 			}
 			System.out.println();
 		}
@@ -696,7 +695,7 @@ class simpleJDBC {
 		System.out.println("\nOrders for " + r1.shipname + ", " + r1.restaurantName);
 		for (int i = 0; i < restaurantOrders.size(); ++i) {
 			for (int j = 0; j < restaurantOrders.get(0).length; ++j) {
-				System.out.print(restaurantOrders.get(i)[j]);
+				System.out.print(restaurantOrders.get(i)[j] + " ");
 			}
 			System.out.println();
 		}
