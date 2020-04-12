@@ -30,7 +30,7 @@ public class ViewPassengersWithRestrictions extends JFrame {
 	private DefaultListModel model;
 	private ArrayList<String[]> passengerInfos;
 
-	public ViewPassengersWithRestrictions() {
+	public ViewPassengersWithRestrictions() throws SQLException {
 		this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent evt){
                 int x = JOptionPane.showConfirmDialog(null, 
@@ -60,7 +60,7 @@ public class ViewPassengersWithRestrictions extends JFrame {
 		ShipNameLabel.setBounds(273, 38, 71, 16);
 		contentPane.add(ShipNameLabel);
 		
-		JComboBox ShipNameComboBox = new JComboBox();
+		JComboBox ShipNameComboBox = new JComboBox(simpleJDBC.getInstance().GetShipNames().toArray());
 		ShipNameComboBox.setBounds(343, 34, 170, 27);
 		contentPane.add(ShipNameComboBox);
 		
@@ -74,31 +74,12 @@ public class ViewPassengersWithRestrictions extends JFrame {
 		
 		model = new DefaultListModel();
 		
-		ShipNameComboBox.addPopupMenuListener(new PopupMenuListener() {
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				ShipNameComboBox.removeAllItems();
-
-				try {
-					for (Object item : simpleJDBC.getInstance().GetShipNames()) {
-						ShipNameComboBox.addItem(item);
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-
-			public void popupMenuCanceled(PopupMenuEvent e) {
-			}
-
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-			}
-		});
-
+		ShipNameComboBox.setSelectedIndex(-1);
 		ShipNameComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Object o = ShipNameComboBox.getSelectedItem();
+					model.clear();
 					if (o == null)
 						return;
 					
@@ -106,8 +87,9 @@ public class ViewPassengersWithRestrictions extends JFrame {
 					ArrayList<String> restrictionList = simpleJDBC.getInstance().GetListOfDietaryRestrictions(shipName);
 					restrictionComboBox.removeAllItems();
 					for (String r : restrictionList) {
-						restrictionComboBox.addItem(r);
+						restrictionComboBox.insertItemAt(r, 0);
 					}
+					restrictionComboBox.setSelectedIndex(-1);
 					restrictionComboBox.setEnabled(true);
 //					restaurantNameLabel.setEnabled(true);
 

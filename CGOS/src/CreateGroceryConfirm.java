@@ -101,11 +101,11 @@ public class CreateGroceryConfirm extends JFrame {
 					ArrayList<String> restaurants = simpleJDBC.getInstance().GetRestaurants(o.toString());
 					RestaurantComboBox.removeAllItems();
 					for (String r : restaurants) {
-						RestaurantComboBox.addItem(r);
+						RestaurantComboBox.insertItemAt(r, 0);
 					}
 					RestaurantComboBox.setEnabled(true);
 					restaurantNameLabel.setEnabled(true);
-
+					RestaurantComboBox.setSelectedIndex(-1);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -162,9 +162,9 @@ public class CreateGroceryConfirm extends JFrame {
 					IngredientsComboBox.removeAllItems();
 					rInfo = simpleJDBC.getInstance().GetRestaurantOrders(restaurant);
 					for (int i = 1; i < rInfo.size(); i++) {
-						IngredientsComboBox.addItem(rInfo.get(i)[4] + " (" + rInfo.get(i)[0] + ")");
+						IngredientsComboBox.insertItemAt(rInfo.get(i)[4] + " (" + rInfo.get(i)[0] + ")", 0);
 					}
-
+					IngredientsComboBox.setSelectedIndex(-1);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

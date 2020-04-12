@@ -133,8 +133,14 @@ public class MainMenu extends JFrame {
 		JButton ViewModifyRestaurantOrdersButton = new JButton("View Passengers With Dietary Restrictions");
 		ViewModifyRestaurantOrdersButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ViewPassengersWithRestrictions VPWR = new ViewPassengersWithRestrictions();
-				VPWR.setVisible(true);
+				ViewPassengersWithRestrictions VPWR;
+				try {
+					VPWR = new ViewPassengersWithRestrictions();
+					VPWR.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dispose();
 			}
 		});

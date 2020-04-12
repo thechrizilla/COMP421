@@ -89,10 +89,11 @@ public class OrderNewIngredient extends JFrame {
 					RestaurantComboBox.removeAllItems();
 					
 					for (String r : restaurants) {
-						RestaurantComboBox.addItem(r);
+						RestaurantComboBox.insertItemAt(r, 0);
 					}
 					RestaurantComboBox.setEnabled(true);
 					restaurantNameLabel.setEnabled(true);
+					RestaurantComboBox.setSelectedIndex(-1);
 					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
