@@ -121,6 +121,9 @@ public class ModifyRestaurantBudgets extends JFrame {
 				
 				try {
 					simpleJDBC.getInstance().UpdateBudget(newInfo);
+					Success S = new Success();
+					S.setVisible(true);
+					dispose();
 				} catch (SQLException e1) {
 					System.out.println("Error updating budget info for " + rName + ", " + rNo);
 					e1.printStackTrace();

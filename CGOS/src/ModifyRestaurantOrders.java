@@ -106,6 +106,9 @@ public class ModifyRestaurantOrders extends JFrame {
 				
 				try {
 					simpleJDBC.getInstance().UpdateIngredient(updateInfo);
+					Success S = new Success();
+					S.setVisible(true);
+					dispose();
 				} catch (SQLException e1) {
 					System.out.println("Error updating ingredient info for " + orderid);
 					e1.printStackTrace();
