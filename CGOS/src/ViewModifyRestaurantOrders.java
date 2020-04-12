@@ -105,17 +105,12 @@ public class ViewModifyRestaurantOrders extends JFrame {
 				dispose();
 			}
 		});
-		
-		RestaurantComboBox.setEnabled(false);
-		RestaurantLabel.setEnabled(false);
-		
+
 		ShipNameComboBox.setSelectedIndex(-1);
 
 		ShipNameComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					RestaurantComboBox.setEnabled(false);
-					RestaurantLabel.setEnabled(false);
 					Object o = ShipNameComboBox.getSelectedItem();
 					if (o == null)
 						return;
@@ -126,8 +121,7 @@ public class ViewModifyRestaurantOrders extends JFrame {
 					for (String r : restaurants) {
 						RestaurantComboBox.insertItemAt(r, 0);
 					}
-					RestaurantComboBox.setEnabled(true);
-					RestaurantLabel.setEnabled(true);
+
 					RestaurantComboBox.setSelectedIndex(-1);
 					model.clear();
 
