@@ -47,10 +47,10 @@ public class CreateGroceryConfirm extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JButton EnterButton = new JButton("Enter");
+		JButton CreateButton = new JButton("Create");
 		
-		EnterButton.setBounds(361, 399, 117, 29);
-		contentPane.add(EnterButton);
+		CreateButton.setBounds(361, 399, 117, 29);
+		contentPane.add(CreateButton);
 
 		JLabel lblNewLabel = new JLabel("Ship Name:");
 		lblNewLabel.setBounds(292, 154, 71, 16);
@@ -185,7 +185,7 @@ public class CreateGroceryConfirm extends JFrame {
 			}
 		});
 		
-		EnterButton.addActionListener(new ActionListener() {
+		CreateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String ingredWithID = IngredientsComboBox.getSelectedItem().toString();
 				StringBuilder orderID = new StringBuilder();

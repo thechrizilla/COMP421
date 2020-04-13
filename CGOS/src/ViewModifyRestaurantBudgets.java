@@ -59,7 +59,7 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 		contentPane.setLayout(null);
 
 		JLabel ShipNameLabel = new JLabel("Ship Name:");
-		ShipNameLabel.setBounds(304, 29, 71, 16);
+		ShipNameLabel.setBounds(254, 29, 71, 16);
 		contentPane.add(ShipNameLabel);
 
 		JLabel RestaurantNameLabel = new JLabel("Restaurant Name and Budget:");
@@ -78,7 +78,7 @@ public class ViewModifyRestaurantBudgets extends JFrame {
 		list_restaurants.setVisibleRowCount(-1);
 
 		JComboBox ShipNameComboBox = new JComboBox(JDBCUser.getInstance().GetShipNames().toArray());
-		ShipNameComboBox.setBounds(374, 25, 134, 27);
+		ShipNameComboBox.setBounds(328, 25, 201, 27);
 		contentPane.add(ShipNameComboBox);
 		ShipNameComboBox.setSelectedIndex(-1);
 		

@@ -106,11 +106,11 @@ public class CreateGrocery extends JFrame {
 
 		
 		JLabel expiryDateLabel = new JLabel("Expiry Date (YYYY-MM-DD):");
-		expiryDateLabel.setBounds(203, 100, 154, 16);
+		expiryDateLabel.setBounds(179, 100, 178, 16);
 		contentPane.add(expiryDateLabel);
 		
-		JLabel storageTempLabel = new JLabel("Storage Temperature:");
-		storageTempLabel.setBounds(224, 133, 144, 16);
+		JLabel storageTempLabel = new JLabel("Storage Temperature (Celsius):");
+		storageTempLabel.setBounds(168, 133, 200, 16);
 		contentPane.add(storageTempLabel);
 		
 		ExpiryDateTextField = new JTextField();
@@ -186,12 +186,12 @@ public class CreateGrocery extends JFrame {
 		lblNewLabel_5.setBounds(70, 221, 34, 16);
 		contentPane.add(lblNewLabel_5);
 		
-		JLabel lblNewLabel_6 = new JLabel("Weight:");
-		lblNewLabel_6.setBounds(314, 221, 54, 16);
+		JLabel lblNewLabel_6 = new JLabel("Weight (kg):");
+		lblNewLabel_6.setBounds(277, 221, 91, 16);
 		contentPane.add(lblNewLabel_6);
 		
-		JLabel lblNewLabel_7 = new JLabel("Price:");
-		lblNewLabel_7.setBounds(607, 221, 34, 16);
+		JLabel lblNewLabel_7 = new JLabel("Price ($):");
+		lblNewLabel_7.setBounds(580, 221, 61, 16);
 		contentPane.add(lblNewLabel_7);
 		
 		TypeTextField = new JTextField();
@@ -209,16 +209,16 @@ public class CreateGrocery extends JFrame {
 		contentPane.add(PriceTextField);
 		PriceTextField.setColumns(10);
 		
-		JLabel lblNewLabel_8 = new JLabel("Height:");
-		lblNewLabel_8.setBounds(56, 313, 61, 16);
+		JLabel lblNewLabel_8 = new JLabel("Height (m):");
+		lblNewLabel_8.setBounds(29, 313, 75, 16);
 		contentPane.add(lblNewLabel_8);
 		
-		JLabel lblNewLabel_9 = new JLabel("Width:");
-		lblNewLabel_9.setBounds(320, 313, 61, 16);
+		JLabel lblNewLabel_9 = new JLabel("Width (m):");
+		lblNewLabel_9.setBounds(277, 313, 80, 16);
 		contentPane.add(lblNewLabel_9);
 		
-		JLabel lblNewLabel_10 = new JLabel("Length:");
-		lblNewLabel_10.setBounds(595, 313, 61, 16);
+		JLabel lblNewLabel_10 = new JLabel("Length (m):");
+		lblNewLabel_10.setBounds(566, 313, 75, 16);
 		contentPane.add(lblNewLabel_10);
 		
 		HeightTextField = new JTextField();
